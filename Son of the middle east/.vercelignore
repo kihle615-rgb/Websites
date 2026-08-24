@@ -1,0 +1,4 @@
+# The full-quality master. The site serves hero.mp4 / hero.webm; this one is
+# only kept in the repo to re-encode from, so it does not need uploading.
+assets/video/hero-source.mp4
+README.md
