@@ -104,7 +104,8 @@
   /* ── Reveal on scroll ─────────────────────────────────────────────────── */
 
   var revealables = document.querySelectorAll(
-    '.section__head, .split__text, .split__figure, .stage, .facts, .grid__foot, .draft-note'
+    '.section__head, .split__text, .split__figure, .stage, .facts, .grid__foot, ' +
+    '.draft-note, .era, .contact-card, .map'
   );
   Array.prototype.forEach.call(revealables, function (el) { el.classList.add('reveal'); });
 
@@ -128,6 +129,46 @@
 
   var video = document.querySelector('.hero__video');
   if (video && reduceMotion) { video.removeAttribute('autoplay'); video.pause(); }
+
+  /* ── Map: fall back to an address panel if the embed can't load ───────── */
+
+  var mapBox   = document.getElementById('map');
+  var mapFrame = document.getElementById('mapFrame');
+  var mapTpl   = document.getElementById('mapFallback');
+
+  if (mapBox && mapFrame && mapTpl) {
+    var settled = false;
+    var useFallback = function () {
+      if (settled) return;
+      settled = true;
+      if (mapFrame.parentNode) mapFrame.remove();
+      mapBox.appendChild(mapTpl.content.cloneNode(true));
+    };
+
+    // A blocked iframe still fires `load` for the browser's own error page, so
+    // the iframe cannot report its own failure. Probe the host instead: with
+    // mode:'no-cors' a reachable host resolves opaquely and a blocked one rejects.
+    if (window.fetch) {
+      window.fetch('https://maps.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' })
+        .then(function () { settled = true; })
+        .catch(useFallback);
+    }
+    window.setTimeout(useFallback, 6000);   // backstop for a hanging request
+  }
+
+  /* ── Highlight today in the opening hours ─────────────────────────────── */
+
+  var todayRow = document.querySelector('#hours tr[data-day="' + new Date().getDay() + '"]');
+  if (todayRow) {
+    todayRow.classList.add('is-today');
+    var th = todayRow.querySelector('th');
+    if (th) {
+      var tag = document.createElement('span');
+      tag.className = 'hours__today';
+      tag.textContent = ' — today';
+      th.appendChild(tag);
+    }
+  }
 
   /* ── Year ─────────────────────────────────────────────────────────────── */
 
