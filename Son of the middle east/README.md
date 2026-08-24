@@ -67,6 +67,13 @@ Hours are 9 am – 9 pm every day, listed in the Contact section and repeated in
 the structured data near the top of `index.html` — change both if they move.
 The current day is highlighted automatically.
 
+### The menu
+
+The dropdown next to the logo is the site's main navigation — and the only one
+on phones, since the gold rail is desktop-only. To change what is in it, edit
+the `<ul class="menu__list">` block in `index.html`; each item is a link to a
+section id further down the same page.
+
 ### The map
 
 The "Find us" section embeds Google Maps. If a visitor's browser blocks the
@@ -81,7 +88,7 @@ Google Maps instead — so the section is never broken, just simpler.
 | `assets/css/site.css` | All styling and the design tokens at the top |
 | `assets/css/fonts.css` | Self-hosted font declarations — do not edit |
 | `assets/js/fragrances.js` | Product data — **edit this one** |
-| `assets/js/site.js` | Renders the products, scroll progress, reveals |
+| `assets/js/site.js` | Renders the products, menu, scroll progress, reveals |
 | `assets/fonts/` | Unbounded and Sora, self-hosted (no Google requests) |
 | `assets/img/`, `assets/video/` | Brand imagery and the hero video |
 

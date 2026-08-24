@@ -49,7 +49,9 @@
   <div class="sillage__track" aria-hidden="true"><span class="sillage__fill"></span></div>
   <ul class="sillage__nodes">
     <li><a href="#about" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">About us</span></a></li>
-    <li><a href="#collection" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">Collection</span></a></li>
+    <li><a href="#collection" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">Products</span></a></li>
+    <li><a href="#unique" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">Why different</span></a></li>
+    <li><a href="#ingredients" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">Ingredients</span></a></li>
     <li><a href="#history" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">History</span></a></li>
     <li><a href="#unfolds" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">How it unfolds</span></a></li>
     <li><a href="#find" data-node><span class="sillage__dot" aria-hidden="true"></span><span class="sillage__label">Find us</span></a></li>
@@ -58,10 +60,36 @@
 </nav>
 
 <header class="topbar">
-  <a class="topbar__brand" href="#top">
-    <img src="assets/img/mark.png" alt="Son of the Middle East" width="30" height="32">
-    <span>Son of the Middle East</span>
-  </a>
+  <div class="topbar__left">
+    <a class="topbar__brand" href="#top">
+      <img src="assets/img/mark.png" alt="Son of the Middle East" width="30" height="32">
+      <span>Son of the Middle East</span>
+    </a>
+
+    <!-- Primary navigation. The sillage rail is desktop-only, so on phones
+         this is the only way around the site. -->
+    <div class="menu" id="menu">
+      <button class="menu__btn" id="menuBtn" type="button"
+              aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
+        <span class="menu__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="menu__btnLabel">Menu</span>
+      </button>
+
+      <div class="menu__panel" id="menuPanel" hidden>
+        <ul class="menu__list">
+          <li><a href="#collection"><span class="menu__label">Products</span><span class="menu__hint">The fragrances we stock</span></a></li>
+          <li><a href="#ingredients"><span class="menu__label">Ingredients</span><span class="menu__hint">Oud, rose, amber and the rest</span></a></li>
+          <li><a href="#unique"><span class="menu__label">Why they're different</span><span class="menu__hint">Attar against Western eau</span></a></li>
+          <li><a href="#history"><span class="menu__label">History of perfume</span><span class="menu__hint">Four thousand years of it</span></a></li>
+          <li><a href="#unfolds"><span class="menu__label">How a scent unfolds</span><span class="menu__hint">Top, heart, base</span></a></li>
+          <li><a href="#about"><span class="menu__label">About us</span><span class="menu__hint">Who we are</span></a></li>
+          <li><a href="#find"><span class="menu__label">Location</span><span class="menu__hint">Dolphins Leap, Summerstrand</span></a></li>
+          <li><a href="#contact"><span class="menu__label">Contact us</span><span class="menu__hint">Call, WhatsApp or visit</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <a class="btn btn--ghost topbar__cta" href="https://wa.me/27643404340">WhatsApp</a>
 </header>
 
@@ -147,6 +175,163 @@
     <p class="grid__foot">
       More arriving regularly, and not everything makes it onto the site.
       <a href="https://wa.me/27643404340">Ask us what is in stock →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ── Why they're different ────────────────────────────────────────────── -->
+<section class="section" id="unique">
+  <div class="wrap">
+    <header class="section__head">
+      <p class="eyebrow">Why they're different</p>
+      <h2 class="h2">Built to stay, not to announce.</h2>
+      <p class="section__intro">
+        Middle Eastern perfumery and the designer bottles on a department store
+        counter are not doing the same job. Four differences do most of the work.
+      </p>
+    </header>
+
+    <ol class="reasons">
+      <li class="reason">
+        <h3 class="reason__title">Concentration</h3>
+        <p>
+          An eau de toilette is roughly 5–15% fragrance oil. Parfum and attar sit
+          far higher. That is most of the reason a designer scent is gone by
+          lunchtime and an oud blend is still there the next morning — you are
+          simply wearing more of the actual perfume.
+        </p>
+      </li>
+      <li class="reason">
+        <h3 class="reason__title">Oil rather than alcohol</h3>
+        <p>
+          Traditional attar is oil-based, with no alcohol at all. Alcohol flashes
+          off and throws scent outward in the first minutes; oil warms with the
+          skin and releases slowly. It is why attar sits close and reveals itself
+          over hours instead of arriving all at once.
+        </p>
+      </li>
+      <li class="reason">
+        <h3 class="reason__title">Built from the base up</h3>
+        <p>
+          Western perfumery often leads with a bright top — citrus, aquatics,
+          fruit. Eastern composition is weighted the other way, toward oud, amber,
+          musk and sandalwood. The heavy materials are the point, not the
+          foundation under something lighter.
+        </p>
+      </li>
+      <li class="reason">
+        <h3 class="reason__title">Made for layering</h3>
+        <p>
+          One scent is rarely the whole answer. Oil on the skin, a spray over it,
+          bakhoor smoked through clothes and hair — the tradition assumes you are
+          combining, and the materials are built to sit on top of one another
+          without turning to mud.
+        </p>
+      </li>
+    </ol>
+
+    <p class="grid__foot">
+      Not sure which suits you? Bring it up in the shop — that is the part we are
+      actually good at. <a href="https://wa.me/27643404340">Ask us →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ── Ingredients ──────────────────────────────────────────────────────── -->
+<section class="section section--raised" id="ingredients">
+  <div class="wrap">
+    <header class="section__head">
+      <p class="eyebrow">Ingredients</p>
+      <h2 class="h2">What actually goes in.</h2>
+      <p class="section__intro">
+        A perfume is an accord — materials combined until they read as one smell
+        rather than a list. These are the ones that do the heavy lifting in
+        Middle Eastern perfumery, and what each is really doing in the blend.
+      </p>
+    </header>
+
+    <ul class="materials">
+      <li class="material">
+        <h3 class="material__name">Oud</h3>
+        <p class="material__aka">Agarwood · dehn al oud</p>
+        <p>
+          Aquilaria trees only produce the dark resinous heartwood when a mould
+          infects them, and most trees never do. Deep, woody, animalic and
+          smoky. It is the most expensive material in the room and it anchors
+          everything placed on top of it.
+        </p>
+      </li>
+      <li class="material">
+        <h3 class="material__name">Rose</h3>
+        <p class="material__aka">Taif &amp; Damask · steam distilled</p>
+        <p>
+          It takes an enormous weight of petals to yield a very small amount of
+          oil, which is why real rose is costly. Paired with oud it is the
+          classic Eastern combination — the rose lifts and sweetens what would
+          otherwise be very dark.
+        </p>
+      </li>
+      <li class="material">
+        <h3 class="material__name">Amber</h3>
+        <p class="material__aka">An accord, not a raw material</p>
+        <p>
+          Worth knowing: perfumers' amber is not fossilised amber and not
+          ambergris. It is a blend — usually labdanum, benzoin and vanilla —
+          built to smell warm, resinous and slightly powdery. A recipe rather
+          than a thing you harvest.
+        </p>
+      </li>
+      <li class="material">
+        <h3 class="material__name">Musk</h3>
+        <p class="material__aka">Now almost always synthetic</p>
+        <p>
+          Historically taken from the musk deer. Today effectively all musk in
+          perfumery is synthetic white musk, which is both a conservation
+          decision and a better one for the blend — cleaner, softer, and far
+          more consistent batch to batch.
+        </p>
+      </li>
+      <li class="material">
+        <h3 class="material__name">Saffron</h3>
+        <p class="material__aka">Leather and warmth</p>
+        <p>
+          Hand-harvested and priced accordingly. In fragrance it reads leathery
+          and slightly medicinal rather than culinary, and it is the bridge that
+          makes rose and oud sit together instead of fighting.
+        </p>
+      </li>
+      <li class="material">
+        <h3 class="material__name">Sandalwood</h3>
+        <p class="material__aka">Creamy, quiet, long</p>
+        <p>
+          Soft, milky and persistent. Sandalwood rarely announces itself — it
+          rounds the sharp edges off everything else and is a large part of why
+          a good base feels smooth rather than heavy.
+        </p>
+      </li>
+      <li class="material">
+        <h3 class="material__name">Frankincense &amp; myrrh</h3>
+        <p class="material__aka">The resins of the incense route</p>
+        <p>
+          Tapped as sap from trees in Southern Arabia and the Horn of Africa,
+          and traded north for thousands of years. Cool, peppery, faintly
+          citric — the smell most people recognise as incense.
+        </p>
+      </li>
+      <li class="material">
+        <h3 class="material__name">Bakhoor</h3>
+        <p class="material__aka">Burned, not worn</p>
+        <p>
+          Wood chips soaked in fragrant oils and burned over charcoal. Not a
+          perfume you apply but one you pass clothes and hair through, and the
+          reason a room or a garment can carry scent for days.
+        </p>
+      </li>
+    </ul>
+
+    <p class="grid__foot">
+      Every fragrance in the shop is some arrangement of these.
+      <a href="#collection">See the collection →</a>
     </p>
   </div>
 </section>

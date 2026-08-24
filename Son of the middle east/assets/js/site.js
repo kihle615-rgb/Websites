@@ -55,6 +55,58 @@
     if (note) note.hidden = false;
   }
 
+  /* ── Dropdown menu ────────────────────────────────────────────────────── */
+
+  var menuBtn   = document.getElementById('menuBtn');
+  var menuPanel = document.getElementById('menuPanel');
+  var menuWrap  = document.getElementById('menu');
+
+  if (menuBtn && menuPanel && menuWrap) {
+    var menuLinks = Array.prototype.slice.call(menuPanel.querySelectorAll('a'));
+
+    var setMenu = function (open, returnFocus) {
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuPanel.hidden = !open;
+      if (!open && returnFocus) menuBtn.focus();
+    };
+    var isOpen = function () { return menuBtn.getAttribute('aria-expanded') === 'true'; };
+
+    menuBtn.addEventListener('click', function () { setMenu(!isOpen()); });
+
+    // Anchors jump within the page, so close on the way out.
+    menuLinks.forEach(function (a) {
+      a.addEventListener('click', function () { setMenu(false); });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isOpen()) { setMenu(false, true); return; }
+      if (!isOpen()) return;
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      e.preventDefault();
+      var i = menuLinks.indexOf(document.activeElement);
+      var next = e.key === 'ArrowDown'
+        ? (i < 0 ? 0 : (i + 1) % menuLinks.length)
+        : (i <= 0 ? menuLinks.length - 1 : i - 1);
+      menuLinks[next].focus();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (isOpen() && !menuWrap.contains(e.target)) setMenu(false);
+    });
+
+    // Opening with the keyboard should land on the first item. stopPropagation
+    // matters: without it the document handler below also runs on this same
+    // keypress and advances focus a second time, landing on item two.
+    menuBtn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!isOpen()) setMenu(true);
+        if (menuLinks[0]) menuLinks[0].focus();
+      }
+    });
+  }
+
   /* ── Scroll progress: the sillage fill + mobile bar ───────────────────── */
 
   var bar = document.createElement('div');
@@ -105,7 +157,7 @@
 
   var revealables = document.querySelectorAll(
     '.section__head, .split__text, .split__figure, .stage, .facts, .grid__foot, ' +
-    '.draft-note, .era, .contact-card, .map'
+    '.draft-note, .era, .contact-card, .map, .reason, .material'
   );
   Array.prototype.forEach.call(revealables, function (el) { el.classList.add('reveal'); });
 

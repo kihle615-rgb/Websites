@@ -594,3 +594,135 @@ strong { font-weight: 600; color: var(--bone); }
    need the 24px minimum. Padding on an inline box grows the hit area without
    shifting the layout. */
 .fact dd a { display: inline-block; padding: 3px 0; }
+
+/* ── Dropdown menu ────────────────────────────────────────────────────── */
+
+.topbar__left { display: flex; align-items: center; gap: clamp(10px, 2vw, 22px); }
+
+.menu { position: relative; }
+
+.menu__btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; padding: 9px 16px;
+  background: rgba(6,5,9,.42);
+  border: 1px solid var(--line);
+  color: var(--bone);
+  font-family: var(--body);
+  font-size: .6875rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color .25s var(--ease), background .25s var(--ease), color .25s var(--ease);
+}
+.menu__btn:hover { border-color: var(--gold); color: var(--gold-bright); }
+.menu__btn[aria-expanded="true"] {
+  border-color: var(--gold); color: var(--gold-bright);
+  background: rgba(216,182,121,.08);
+}
+
+/* three bars that fold into a cross when open */
+.menu__bars { display: grid; gap: 4px; width: 16px; }
+.menu__bars span {
+  display: block; height: 1.5px; width: 100%;
+  background: currentColor;
+  transition: transform .3s var(--ease), opacity .2s var(--ease);
+}
+.menu__btn[aria-expanded="true"] .menu__bars span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.menu__btn[aria-expanded="true"] .menu__bars span:nth-child(2) { opacity: 0; }
+.menu__btn[aria-expanded="true"] .menu__bars span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+@media (prefers-reduced-motion: reduce) { .menu__bars span { transition: none; } }
+
+.menu__panel {
+  position: absolute; z-index: 80;
+  top: calc(100% + 10px); left: 0;
+  width: min(340px, calc(100vw - 32px));
+  background: rgba(10, 8, 14, .97);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 24px 60px rgba(0,0,0,.6);
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+}
+.menu__panel[hidden] { display: none; }
+
+.menu__list { list-style: none; margin: 0; padding: 6px; display: grid; gap: 2px; }
+
+.menu__list a {
+  display: grid; gap: 2px;
+  padding: 11px 14px;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+.menu__list a:hover, .menu__list a:focus-visible {
+  background: rgba(216,182,121,.08);
+  border-left-color: var(--gold);
+}
+.menu__label {
+  font-family: var(--display);
+  font-size: .875rem; font-weight: 700;
+  letter-spacing: -.01em; color: var(--bone);
+  line-height: 1.25;
+}
+.menu__list a:hover .menu__label, .menu__list a:focus-visible .menu__label { color: var(--gold-bright); }
+.menu__hint {
+  font-size: .75rem; color: var(--bone-dim); line-height: 1.4;
+}
+
+@media (max-width: 620px) {
+  .menu__btnLabel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .menu__btn { padding: 9px 12px; }
+  /* Anchored to the viewport rather than the button: the button sits inset from
+     the left, so a button-anchored panel runs off the right edge on a phone. */
+  .menu__panel {
+    position: fixed;
+    top: 72px; left: 12px; right: 12px;
+    width: auto;
+    max-height: calc(100svh - 92px);
+  }
+}
+
+/* ── Why they're different ────────────────────────────────────────────── */
+
+.reasons {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: clamp(20px, 3vw, 30px);
+}
+@media (min-width: 780px) { .reasons { grid-template-columns: repeat(2, 1fr); } }
+
+.reason {
+  border-top: 2px solid var(--gold-deep);
+  padding-top: var(--s-3);
+}
+.reason__title {
+  font-family: var(--display); font-weight: 700; font-size: 1.25rem;
+  letter-spacing: -.02em; color: var(--bone); margin: 0 0 var(--s-2);
+}
+.reason p { color: var(--bone-dim); font-size: .9375rem; margin: 0; max-width: 52ch; }
+
+/* ── Ingredients ──────────────────────────────────────────────────────── */
+
+.materials {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: clamp(18px, 2.4vw, 26px);
+}
+@media (min-width: 700px)  { .materials { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .materials { grid-template-columns: repeat(4, 1fr); } }
+
+.material {
+  background: var(--ink-card);
+  border: 1px solid var(--line);
+  padding: var(--s-3);
+  transition: border-color .3s var(--ease);
+}
+.material:hover { border-color: var(--line-strong); }
+.material__name {
+  font-family: var(--display); font-weight: 700; font-size: 1.125rem;
+  letter-spacing: -.02em; color: var(--bone); margin: 0 0 4px;
+}
+.material__aka {
+  font-size: .625rem; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--gold-muted);
+  margin: 0 0 var(--s-2); max-width: none;
+}
+.material p:last-child { color: var(--bone-dim); font-size: .875rem; margin: 0; max-width: none; }
