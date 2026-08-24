@@ -78,6 +78,10 @@ the closing time is shown — add the rest in the "Visit" section when you have 
 | `assets/fonts/` | Amiri and Jost, self-hosted (no Google requests) |
 | `assets/img/`, `assets/video/` | Brand imagery and the hero video |
 
+The hero video ships in two formats — `hero.webm` (VP9) and `hero.mp4` (H.264) —
+so it plays in every browser. `hero-source.mp4` is the untouched original at full
+quality; re-encode from that one if you ever need different dimensions.
+
 ### Design notes
 
 - **Colour** is sampled from the brand's own gold-on-black logo (`#D8B679`,
