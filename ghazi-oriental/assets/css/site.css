@@ -1,0 +1,847 @@
+/* ==========================================================================
+   GHAZI ORIENTAL  ·  Son of the Middle East
+   --------------------------------------------------------------------------
+   Everything visual lives here. The tokens at the top drive the rest of the
+   file — change a value there and it changes everywhere.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS
+   Colour is sampled from the brand film: the deep emerald of the end card,
+   the gold of the arabesque, the cream of the wordmark.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* ground */
+  --ink:        #04100E;   /* page */
+  --deep:       #08211E;   /* raised band */
+  --jade:       #0C302B;   /* card, input */
+
+  /* ink on ground */
+  --cream:      #F2EADB;   /* primary text        16.2:1 on --ink */
+  --muted:      #8FA79D;   /* secondary text       5.6:1 on --jade */
+  --gold:       #C9A24D;   /* accent, small caps   6.0:1 on --jade */
+  --gold-hi:    #EFD79B;   /* highlight */
+
+  /* lines and veils */
+  --line:       rgba(201, 162, 77, .22);
+  --line-soft:  rgba(242, 234, 219, .10);
+  --veil:       rgba(4, 16, 14, .72);
+
+  /* type */
+  --display: 'Marcellus', 'Times New Roman', serif;
+  --body:    'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* rhythm — 4px base, generous at the section level */
+  --s-1:  .5rem;
+  --s-2:   1rem;
+  --s-3: 1.5rem;
+  --s-4:   2rem;
+  --s-5:   3rem;
+  --s-6:   4rem;
+  --s-7:   6rem;
+  --s-8:   9rem;
+
+  --wrap: 76rem;
+  --radius: 2px;
+
+  /* motion */
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --slow: .8s;
+  --mid:  .45s;
+  --fast: .2s;
+
+  /* layers */
+  --z-rail: 40;
+  --z-bar: 60;
+  --z-grain: 80;
+  --z-load: 100;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET AND BASE
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--cream);
+  font: 400 1rem/1.7 var(--body);
+  letter-spacing: .01em;
+  overflow-x: hidden;
+}
+
+img, video, svg { display: block; max-width: 100%; }
+img { height: auto; }
+
+h1, h2, h3 { margin: 0; font-weight: 400; }
+
+p { margin: 0 0 var(--s-3); }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+::selection { background: var(--gold); color: var(--ink); }
+
+.skip {
+  position: absolute;
+  left: var(--s-2);
+  top: -4rem;
+  z-index: calc(var(--z-load) + 1);
+  padding: .75rem 1.25rem;
+  background: var(--gold);
+  color: var(--ink);
+  font: 500 .85rem var(--body);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: top var(--fast) var(--ease);
+}
+.skip:focus { top: var(--s-2); }
+
+/* visually hidden, still read aloud */
+.vh {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   3. TYPE
+   Marcellus is a Roman inscriptional capital — it only works in a wide,
+   unhurried setting, so it is always tracked out and never used small.
+   -------------------------------------------------------------------------- */
+
+.display {
+  font-family: var(--display);
+  font-size: clamp(2.75rem, 8.5vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: .005em;
+}
+
+.h2 {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 4.4vw, 3.25rem);
+  line-height: 1.12;
+  letter-spacing: .01em;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.25;
+  letter-spacing: .02em;
+}
+
+.eyebrow {
+  margin: 0 0 var(--s-3);
+  color: var(--gold);
+  font: 500 .7rem/1 var(--body);
+  letter-spacing: .34em;
+  text-transform: uppercase;
+}
+
+.lede {
+  max-width: 34ch;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--cream);
+}
+
+.prose {
+  max-width: 60ch;
+  color: var(--muted);
+}
+.prose strong { color: var(--cream); font-weight: 400; }
+
+.rule {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--line);
+}
+
+/* --------------------------------------------------------------------------
+   4. BUTTONS
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 44px;
+  padding: .7rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font: 500 .78rem/1 var(--body);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease),
+              color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+
+.btn--gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+.btn--gold:hover { background: var(--gold-hi); border-color: var(--gold-hi); }
+
+.btn--ghost { background: none; color: var(--cream); }
+.btn--ghost:hover { border-color: var(--gold); color: var(--gold-hi); }
+
+/* --------------------------------------------------------------------------
+   5. PAGE FURNITURE
+   A thin bar and one small chapter readout. Nothing else is fixed —
+   the film is the thing that should hold the screen.
+   -------------------------------------------------------------------------- */
+
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-bar);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: .85rem clamp(1rem, 3vw, 2.25rem);
+  background: linear-gradient(var(--ink), rgba(4, 16, 14, 0));
+  transition: background var(--mid) var(--ease);
+}
+.bar[data-solid='true'] {
+  background: rgba(4, 16, 14, .92);
+  border-bottom: 1px solid var(--line-soft);
+  backdrop-filter: blur(10px);
+}
+
+.bar__brand {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  text-decoration: none;
+  min-height: 44px;
+}
+.bar__mark { width: 22px; height: auto; opacity: .95; }
+.bar__name {
+  font: 500 .66rem/1.35 var(--body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.bar__shop { display: block; }
+.bar__line { display: block; color: var(--gold); letter-spacing: .26em; }
+@media (max-width: 30rem) {
+  .bar__name { font-size: .58rem; letter-spacing: .12em; }
+  .bar__line { letter-spacing: .16em; }
+}
+
+.bar__nav { display: none; gap: var(--s-3); }
+.bar__nav a {
+  font: 400 .72rem/1 var(--body);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .8rem .1rem;
+  transition: color var(--fast) var(--ease);
+}
+.bar__nav a:hover, .bar__nav a[aria-current='true'] { color: var(--gold-hi); }
+
+@media (min-width: 60rem) {
+  .bar__nav { display: flex; }
+}
+
+/* the chapter readout, bottom-left, desktop only */
+.chapter {
+  position: fixed;
+  left: clamp(1rem, 3vw, 2.25rem);
+  bottom: 1.6rem;
+  z-index: var(--z-rail);
+  display: none;
+  align-items: baseline;
+  gap: .8rem;
+  font: 400 .68rem/1 var(--body);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+}
+.chapter__num { color: var(--gold); font-family: var(--display); font-size: .95rem; letter-spacing: .1em; }
+.chapter__name { transition: opacity var(--mid) var(--ease); }
+@media (min-width: 60rem) and (min-height: 34rem) {
+  .chapter { display: flex; }
+}
+
+/* film grain — one repeating SVG, no image request */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: .30;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   6. PRELOADER
+   A gold hairline arch drawing itself while the film buffers.
+   -------------------------------------------------------------------------- */
+
+.load {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-load);
+  display: grid;
+  place-items: center;
+  gap: var(--s-3);
+  background: var(--ink);
+  transition: opacity var(--slow) var(--ease), visibility var(--slow);
+}
+.load[data-done='true'] { opacity: 0; visibility: hidden; }
+
+.load__inner { display: grid; place-items: center; gap: var(--s-3); }
+
+.load__ring { width: clamp(88px, 22vw, 132px); height: auto; }
+.load__ring circle {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+  stroke-dasharray: 302;
+  stroke-dashoffset: 302;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.load__count {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  letter-spacing: .2em;
+  color: var(--gold-hi);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   7. SECTIONS
+   -------------------------------------------------------------------------- */
+
+.wrap {
+  width: min(100% - clamp(2rem, 8vw, 6rem), var(--wrap));
+  margin-inline: auto;
+}
+
+.section { padding-block: clamp(4rem, 9vw, var(--s-7)); }
+.section--band { background: var(--deep); }
+
+.section__head { margin-bottom: clamp(2rem, 5vw, var(--s-6)); }
+
+/* --------------------------------------------------------------------------
+   8. ACT I — THE FILM
+   A tall scroll track with a sticky stage. The film is scrubbed by scroll
+   position; the words change with it. On a phone the stage goes full-bleed
+   because the film is already a portrait.
+   -------------------------------------------------------------------------- */
+
+.film { position: relative; }
+.film__track { height: 320vh; }
+
+.film__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  padding-top: 4.5rem;
+  overflow: hidden;
+}
+
+/* the vitrine: the film behind a drawn gold arch */
+.vitrine {
+  position: relative;
+  width: min(86vw, calc((100svh - 12rem) * 0.5625));
+  aspect-ratio: 9 / 16;
+  max-height: calc(100svh - 11rem);
+}
+
+.vitrine__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: url(#archClip);
+  background: #030c0b;
+}
+.vitrine__media video,
+.vitrine__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vitrine__frame {
+  position: absolute;
+  inset: -10px;
+  pointer-events: none;
+}
+.vitrine__frame path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+  opacity: .75;
+}
+
+/* the words that sit over / beside the film */
+.beats {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: end center;
+  padding: var(--s-4) var(--s-3) clamp(4rem, 10svh, 5.5rem);
+  pointer-events: none;
+  text-align: center;
+}
+
+.beat {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--slow) var(--ease), transform var(--slow) var(--ease);
+}
+.beat[data-on='true'] { opacity: 1; transform: none; }
+
+.beat__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2rem, 7vw, 3.6rem);
+  line-height: 1.05;
+  text-shadow: 0 2px 30px rgba(4, 16, 14, .95), 0 0 60px rgba(4, 16, 14, .8);
+}
+.beat__eyebrow {
+  margin: 0 0 var(--s-2);
+  color: var(--gold);
+  font: 500 .66rem/1 var(--body);
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 18px rgba(4, 16, 14, .95);
+}
+
+.beat__sub {
+  margin: var(--s-2) 0 0;
+  font-size: .95rem;
+  font-weight: 300;
+  color: var(--cream);
+  text-shadow: 0 2px 20px rgba(4, 16, 14, .95);
+}
+.beat__wordmark { width: min(64vw, 300px); margin-inline: auto; }
+
+.film__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 60% at 50% 34%, rgba(4, 16, 14, 0) 40%, rgba(4, 16, 14, .5) 100%),
+    linear-gradient(rgba(4, 16, 14, 0) 44%, rgba(4, 16, 14, .72) 66%, var(--ink) 86%);
+}
+
+.film__hint {
+  position: absolute;
+  left: 50%;
+  bottom: 1.6rem;
+  transform: translateX(-50%);
+  font: 400 .64rem/1 var(--body);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: opacity var(--mid) var(--ease);
+}
+
+/* on a wide screen the film moves left and the words sit beside it */
+@media (min-width: 62rem) {
+  .film__stage { place-items: center start; }
+  .vitrine {
+    margin-left: clamp(2rem, 7vw, 6rem);
+    width: min(34vw, calc((100svh - 9rem) * 0.5625));
+  }
+  .beats {
+    inset: 0 clamp(2rem, 6vw, 5rem) 0 auto;
+    width: min(46vw, 34rem);
+    place-items: center start;
+    text-align: left;
+    padding: 0;
+  }
+  .beat__wordmark { margin-inline: 0; width: min(26vw, 330px); }
+  .film__scrim { background: radial-gradient(90% 90% at 22% 50%, rgba(4, 16, 14, 0) 40%, rgba(4, 16, 14, .55) 100%); }
+}
+
+/* --------------------------------------------------------------------------
+   9. ACT II — THE HOUSE
+   -------------------------------------------------------------------------- */
+
+.house { position: relative; overflow: hidden; }
+
+.house__mandala {
+  position: absolute;
+  top: 50%;
+  right: -26%;
+  width: min(72vw, 560px);
+  translate: 0 -50%;
+  opacity: .11;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.house__grid { position: relative; }
+
+.pillars {
+  list-style: none;
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+.pillar { padding-top: var(--s-3); border-bottom: 1px solid var(--line); padding-bottom: var(--s-4); }
+.pillar__word {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  color: var(--gold-hi);
+  letter-spacing: .04em;
+  margin-bottom: .6rem;
+}
+.pillar p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+@media (min-width: 48rem) {
+  .pillars { grid-template-columns: repeat(3, 1fr); gap: var(--s-5); }
+  .pillar { border-bottom: 0; }
+}
+@media (min-width: 62rem) {
+  .house__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--s-6);
+    row-gap: 0;
+    align-items: end;
+  }
+  .pillars { grid-column: 1 / -1; margin-top: var(--s-6); }
+}
+
+/* --------------------------------------------------------------------------
+   10. ACT III — THE PRICE
+   The honest bit: the price follows the bottle, not the name.
+   -------------------------------------------------------------------------- */
+
+.sizes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+@media (min-width: 44rem) { .sizes { grid-template-columns: repeat(3, 1fr); } }
+
+.size {
+  background: var(--ink);
+  padding: clamp(1.75rem, 5vw, var(--s-5));
+  display: grid;
+  gap: .35rem;
+  align-content: start;
+}
+.size__ml {
+  font: 500 .72rem/1 var(--body);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.size__price {
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 7vw, 3.6rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--cream);
+}
+.size__note { font-size: .88rem; color: var(--muted); }
+
+/* --------------------------------------------------------------------------
+   11. ACT IV — THE INDEX
+   Two hundred names is only useful if it can be searched. The controls
+   stick to the top of the section while you scroll the list.
+   -------------------------------------------------------------------------- */
+
+.index__controls {
+  position: sticky;
+  top: 3.9rem;
+  z-index: 20;
+  padding: var(--s-2) 0 0;
+  background: var(--deep);
+  box-shadow: 0 1.25rem 1rem -.75rem var(--deep), 0 0 0 100vmax var(--deep);
+  clip-path: inset(0 -100vmax);
+}
+
+.search { position: relative; display: block; }
+.search__field {
+  width: 100%;
+  min-height: 52px;
+  padding: .9rem 1rem .9rem 2.85rem;
+  background: var(--jade);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--cream);
+  font: 400 1rem var(--body);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search__field::placeholder { color: var(--muted); }
+.search__field:focus { border-color: var(--gold); }
+.search__field::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; height: 20px;
+  cursor: pointer;
+  background: currentColor;
+  color: var(--muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6'%3E%3Cpath d='M6 6 18 18M18 6 6 18'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6'%3E%3Cpath d='M6 6 18 18M18 6 6 18'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.search__field::-webkit-search-cancel-button:hover { color: var(--gold-hi); }
+.search__icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  translate: 0 -50%;
+  width: 18px;
+  height: 18px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 1.4;
+  pointer-events: none;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(.35rem, 1.4vw, .5rem);
+  margin-top: var(--s-2);
+}
+.filter {
+  min-height: 40px;
+  padding: .55rem clamp(.6rem, 2.6vw, 1rem);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font: 500 .72rem/1 var(--body);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease),
+              background var(--fast) var(--ease);
+}
+.filter:hover { color: var(--cream); border-color: var(--gold); }
+.filter[aria-pressed='true'] {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.tally {
+  margin: 0;
+  padding: var(--s-2) 0 .85rem;
+  font-size: .82rem;
+  letter-spacing: .1em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.index__list { margin-top: var(--s-3); }
+
+.letter { border-top: 1px solid var(--line); padding-top: var(--s-2); margin-top: var(--s-4); }
+.letter__head {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  letter-spacing: .18em;
+  color: var(--gold);
+  margin-bottom: .4rem;
+}
+.letter__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 1;
+  column-gap: var(--s-5);
+}
+@media (min-width: 40rem) { .letter__items { columns: 2; } }
+@media (min-width: 62rem) { .letter__items { columns: 3; } }
+
+.scent {
+  break-inside: avoid;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding: .5rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.scent__name { font-size: .95rem; }
+.scent mark { background: rgba(201, 162, 77, .28); color: var(--gold-hi); }
+.scent__tag {
+  flex: none;
+  font: 500 .6rem/1 var(--body);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.scent__tag[data-for='unisex'] { color: var(--gold); }
+
+.empty {
+  margin-top: var(--s-5);
+  padding: var(--s-4);
+  border: 1px solid var(--line);
+  text-align: center;
+  color: var(--muted);
+}
+.empty strong { display: block; color: var(--cream); font-weight: 400; margin-bottom: .4rem; font-family: var(--display); font-size: 1.2rem; }
+
+/* --------------------------------------------------------------------------
+   12. ACT V — VISIT
+   -------------------------------------------------------------------------- */
+
+.contact__grid { display: grid; gap: var(--s-5); }
+@media (min-width: 56rem) {
+  .contact__grid { grid-template-columns: 1.1fr 1fr; gap: var(--s-6); }
+}
+
+.lines { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.line { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3);
+        padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
+.line__key { font: 500 .68rem/1.4 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); flex: none; }
+.line__val { text-align: right; }
+.line__val a { color: var(--cream); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.line__val a:hover { color: var(--gold-hi); border-color: var(--gold); }
+.line__val span { display: block; color: var(--muted); font-size: .88rem; }
+
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: var(--s-4); }
+
+/* --------------------------------------------------------------------------
+   13. FOOTER
+   -------------------------------------------------------------------------- */
+
+.foot {
+  border-top: 1px solid var(--line);
+  padding-block: var(--s-5);
+  text-align: center;
+}
+.foot__mark { width: 150px; margin: 0 auto var(--s-3); opacity: .9; }
+.foot__tag { font-family: var(--display); color: var(--gold-hi); letter-spacing: .06em; font-size: 1.05rem; }
+.foot__at {
+  margin: var(--s-5) 0 var(--s-3);
+  font: 400 .68rem/1 var(--body);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.foot__at::before, .foot__at::after {
+  content: '';
+  display: inline-block;
+  width: clamp(2rem, 8vw, 4rem);
+  height: 1px;
+  margin: 0 .9rem;
+  vertical-align: middle;
+  background: var(--line);
+}
+.foot__shop { width: 190px; margin: 0 auto var(--s-2); opacity: .9; }
+.foot__meta { margin: 0; font-size: .78rem; color: var(--muted); letter-spacing: .06em; }
+
+/* --------------------------------------------------------------------------
+   14. REVEALS
+   -------------------------------------------------------------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity var(--slow) var(--ease), transform var(--slow) var(--ease);
+  transition-delay: var(--delay, 0ms);
+}
+[data-reveal][data-shown='true'] { opacity: 1; transform: none; }
+
+/* --------------------------------------------------------------------------
+   15. REDUCED MOTION
+   No scrubbing, no drifting, no reveals held back — everything on screen.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+  [data-reveal] { opacity: 1; transform: none; }
+
+  /* the film stops being a scroll track and becomes a still poster:
+     one column, everything visible, nothing pinned */
+  .film__track { height: auto; }
+
+  .film__stage {
+    position: static;
+    height: auto;
+    display: grid;
+    place-items: center;
+    gap: var(--s-5);
+    padding: 7rem clamp(1.25rem, 5vw, 3rem) var(--s-6);
+    overflow: visible;
+  }
+
+  .vitrine {
+    width: min(74vw, 320px);
+    max-height: none;
+    margin: 0;
+  }
+
+  .beats {
+    position: static;
+    inset: auto;
+    display: grid;
+    gap: var(--s-4);
+    width: min(100%, 42rem);
+    place-items: center;
+    text-align: center;
+    padding: 0;
+  }
+
+  .beat {
+    grid-area: auto;
+    opacity: 1;
+    transform: none;
+  }
+
+  .beat__wordmark { margin-inline: auto; width: min(60vw, 300px); }
+
+  .film__scrim, .film__hint { display: none; }
+  .house__mandala { display: none; }
+}
