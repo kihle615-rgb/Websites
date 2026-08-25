@@ -1,13 +1,13 @@
 /* ==========================================================================
    GHAZI ORIENTAL  —  page behaviour
    --------------------------------------------------------------------------
-   Five jobs, in order:
+   Five small jobs:
 
      1. hold a preloader until the film has frames to show
-     2. scrub the film with the scroll wheel, and swap the words with it
-     3. keep the bar, the chapter readout and the reveals in step
+     2. let the film play, and stop it for anyone who asks for less motion
+     3. keep the bar, the chapter readout and the reveals in step with scroll
      4. print the price list from SIZES
-     5. print and filter the index from FRAGRANCES
+     5. print and filter the collection from FRAGRANCES, and mark today's hours
 
    Product data lives in catalogue.js. Nothing in here needs editing to
    change a fragrance or a price.
@@ -19,7 +19,6 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var clamp = function (n, a, b) { return n < a ? a : n > b ? b : n; };
 
 
   /* ------------------------------------------------------------------------
@@ -59,10 +58,10 @@
     window.setTimeout(function () { load.hidden = true; }, 900);
   }
 
+  function filmSettled() { ready.film = true; }
+
   if (document.readyState === 'complete') ready.page = true;
   else window.addEventListener('load', function () { ready.page = true; });
-
-  function filmSettled() { ready.film = true; }
 
   if (video) {
     if (video.readyState >= 2) filmSettled();
@@ -71,7 +70,7 @@
     });
     /* a <source> that can't be played fires on the source, not the video —
        and leaves networkState at NETWORK_NO_SOURCE with no event at all */
-    $$('source', video).forEach(function (s) { s.addEventListener('error', filmSettled); });
+    $$('source', video).forEach(function (el) { el.addEventListener('error', filmSettled); });
     var watch = window.setInterval(function () {
       if (ready.film || video.networkState === 3) { filmSettled(); window.clearInterval(watch); }
     }, 250);
@@ -86,95 +85,33 @@
 
   /* ------------------------------------------------------------------------
      2. THE FILM
-     Scroll position drives currentTime. The seek is eased rather than set
-     outright, so a flicked wheel reads as a camera move instead of a jump.
-
-     If the browser can't keep up with seeking — some mobile decoders can't —
-     the film gives up and simply loops, which still looks right.
+     It plays and loops on its own. Anyone who has asked their system for
+     less motion gets the poster frame instead, held still.
      ---------------------------------------------------------------------- */
 
-  var track = $('#filmTrack');
-  var beats = $$('.beat');
-  var hint  = $('#filmHint');
-
-  var scrubbing = false;
-  var seekTarget = 0;
-  var seekCurrent = 0;
-  var stalled = 0;
-
-  function filmProgress() {
-    if (!track) return 0;
-    var box = track.getBoundingClientRect();
-    var span = box.height - window.innerHeight;
-    if (span <= 0) return 0;
-    return clamp(-box.top / span, 0, 1);
-  }
-
-  function setBeat(p) {
-    var i = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
-    for (var n = 0; n < beats.length; n++) {
-      beats[n].setAttribute('data-on', n === i ? 'true' : 'false');
-    }
-    if (hint) hint.style.opacity = p > 0.04 ? '0' : '1';
-  }
-
-  function giveUpScrubbing() {
-    if (!scrubbing) return;
-    scrubbing = false;
-    if (video) { video.loop = true; video.play().catch(function () {}); }
-  }
-
-  function scrubFrame() {
-    if (!scrubbing) return;
-
-    var d = video.duration;
-    if (d && isFinite(d)) {
-      seekCurrent += (seekTarget * d - seekCurrent) * 0.14;
-      var want = clamp(seekCurrent, 0, d - 0.05);
-      var gap = Math.abs(video.currentTime - want);
-
-      /* a decoder that accepts the seek but never lands on the frame leaves
-         this gap open — after a second of that, stop fighting it and loop */
-      if (gap > 0.25) {
-        stalled++;
-        if (stalled > 60) { giveUpScrubbing(); return; }
-      } else {
-        stalled = 0;
-      }
-
-      if (!video.seeking && gap > 0.03) video.currentTime = want;
-    }
-    requestAnimationFrame(scrubFrame);
-  }
-
   function startFilm() {
-    if (!video || !track) return;
+    if (!video) return;
 
     if (reduced.matches) {
       video.pause();
       video.removeAttribute('autoplay');
-      setBeat(0);
+      video.loop = false;
       return;
     }
 
-    /* let it autoplay first so the decoder has real frames, then take over */
-    var take = function () {
-      if (scrubbing) return;
-      video.pause();
-      video.loop = false;
-      scrubbing = true;
-      seekTarget = filmProgress();
-      seekCurrent = seekTarget * (video.duration || 0);
-      requestAnimationFrame(scrubFrame);
+    /* autoplay is on the element; this only covers browsers that refuse it
+       until something asks, and it is allowed because the film is muted */
+    var play = function () {
+      var p = video.play();
+      if (p && p.catch) p.catch(function () {});
     };
-
-    if (video.readyState >= 2) window.setTimeout(take, 400);
-    else video.addEventListener('loadeddata', function () { window.setTimeout(take, 400); });
+    if (video.readyState >= 2) play();
+    else video.addEventListener('loadeddata', play, { once: true });
   }
 
 
   /* ------------------------------------------------------------------------
-     3. SCROLL — bar, chapter readout, mandala, beats
+     3. SCROLL — bar, chapter readout, mandala
      One listener, one rAF tick, everything reads from it.
      ---------------------------------------------------------------------- */
 
@@ -185,11 +122,11 @@
   var navLinks = $$('#nav a');
 
   var CHAPTERS = [
-    { id: 'top',    num: 'I',   name: 'The film' },
-    { id: 'house',  num: 'II',  name: 'The house' },
-    { id: 'prices', num: 'III', name: 'Prices' },
-    { id: 'index',  num: 'IV',  name: 'The index' },
-    { id: 'visit',  num: 'V',   name: 'Visit' }
+    { id: 'top',        num: 'I',   name: 'Ghazi Oriental' },
+    { id: 'promise',    num: 'II',  name: 'The promise' },
+    { id: 'prices',     num: 'III', name: 'Prices' },
+    { id: 'collection', num: 'IV',  name: 'The collection' },
+    { id: 'visit',      num: 'V',   name: 'Visit' }
   ];
 
   var currentChapter = -1;
@@ -200,10 +137,6 @@
     var y = window.scrollY || window.pageYOffset;
 
     if (bar) bar.setAttribute('data-solid', y > 40 ? 'true' : 'false');
-
-    var p = filmProgress();
-    setBeat(p);
-    if (scrubbing) seekTarget = p;
 
     if (mandala && !reduced.matches) {
       mandala.style.transform = 'rotate(' + (y * 0.02).toFixed(2) + 'deg)';
@@ -275,11 +208,8 @@
       price.className = 'size__price';
       price.textContent = s.price;
 
-      var note = document.createElement('span');
-      note.className = 'size__note';
-      note.textContent = 'Any fragrance in the index.';
-
-      li.appendChild(ml); li.appendChild(price); li.appendChild(note);
+      li.appendChild(ml);
+      li.appendChild(price);
       frag.appendChild(li);
     });
     sizesEl.appendChild(frag);
@@ -287,18 +217,33 @@
 
 
   /* ------------------------------------------------------------------------
-     6. THE INDEX
+     6. OPENING HOURS — pick out today
+     ---------------------------------------------------------------------- */
+
+  $$('#hours .hour').forEach(function (li) {
+    var today = Number(li.getAttribute('data-day')) === new Date().getDay();
+    li.setAttribute('data-today', today ? 'true' : 'false');
+  });
+
+
+  /* ------------------------------------------------------------------------
+     7. THE COLLECTION
      Sort, group by first letter, filter, search. Matches are marked so the
      eye lands on the right row without reading the whole column.
      ---------------------------------------------------------------------- */
 
-  var listEl   = $('#list');
-  var emptyEl  = $('#empty');
-  var tallyEl  = $('#tally');
-  var searchEl = $('#search');
+  var listEl    = $('#list');
+  var emptyEl   = $('#empty');
+  var tallyEl   = $('#tally');
+  var creedEl   = $('#creed');
+  var searchEl  = $('#search');
   var filterEls = $$('.filter');
 
-  var TAGS = { her: 'Ladies', him: 'Gentlemen', unisex: 'Unisex' };
+  var TAGS  = { her: 'Ladies', him: 'Gentlemen', unisex: 'Unisex' };
+  var CREED = {
+    her: 'Sophisticated. Timeless. Captivating.',
+    him: 'Bold. Refined. Powerful.'
+  };
   var mode = 'all';
 
   function fold(s) {
@@ -359,12 +304,12 @@
     var shown = ALL.filter(function (f) { return matches(f, q); });
 
     var frag = document.createDocumentFragment();
-    var letter = null, group = null, items = null;
+    var letter = null, items = null;
 
     shown.forEach(function (f) {
       if (f.letter !== letter) {
         letter = f.letter;
-        group = document.createElement('section');
+        var group = document.createElement('section');
         group.className = 'letter';
 
         var h = document.createElement('h3');
@@ -373,8 +318,14 @@
         say.className = 'vh';
         say.textContent = letter === '#' ? 'Names starting with a number' : 'Names starting with ';
         h.appendChild(say);
-        if (letter !== '#') h.appendChild(document.createTextNode(letter));
-        else { var hash = document.createElement('span'); hash.setAttribute('aria-hidden','true'); hash.textContent = '#'; h.appendChild(hash); }
+        if (letter !== '#') {
+          h.appendChild(document.createTextNode(letter));
+        } else {
+          var hash = document.createElement('span');
+          hash.setAttribute('aria-hidden', 'true');
+          hash.textContent = '#';
+          h.appendChild(hash);
+        }
         group.appendChild(h);
 
         items = document.createElement('ul');
@@ -401,12 +352,13 @@
     listEl.appendChild(frag);
 
     if (emptyEl) emptyEl.hidden = shown.length !== 0;
+    if (creedEl) creedEl.textContent = CREED[mode] || '';
 
     if (tallyEl) {
-      var label = mode === 'all' ? 'fragrances'
-                : mode === 'her' ? 'in the ladies collection'
+      var label = mode === 'her' ? 'in the ladies collection'
                 : mode === 'him' ? 'in the gentlemen collection'
-                : 'worn by anyone';
+                : mode === 'unisex' ? 'worn by anyone'
+                : 'fragrances';
       tallyEl.textContent = shown.length === 0
         ? 'No match in ' + ALL.length + ' fragrances'
         : shown.length + ' ' + label;
@@ -423,6 +375,7 @@
         queued = true;
         requestAnimationFrame(function () { queued = false; render(); });
       });
+      searchEl.placeholder = 'Search ' + ALL.length + ' fragrances';
     }
 
     filterEls.forEach(function (btn) {
@@ -434,8 +387,6 @@
         render();
       });
     });
-
-    if (searchEl) searchEl.placeholder = 'Search ' + ALL.length + ' fragrances';
   }
 
 
@@ -445,7 +396,7 @@
 
   startFilm();
   onScrollFrame();
-  reduced.addEventListener && reduced.addEventListener('change', function () {
-    window.location.reload();
-  });
+  if (reduced.addEventListener) {
+    reduced.addEventListener('change', function () { window.location.reload(); });
+  }
 })();

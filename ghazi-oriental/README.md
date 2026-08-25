@@ -1,9 +1,9 @@
 # Ghazi Oriental — website
 
-A one-page site for the Ghazi Oriental fragrance collection at **Son of the
-Middle East**, Gqeberha. Visitors watch the film, check the price list, search
-the 204 fragrances on the shelf, then call or WhatsApp. There is no cart and no
-online payment — the shop is the checkout.
+A one-page site for Ghazi Oriental, Moffett On Main, Walmer, Gqeberha. The film
+plays, the price list is one panel, all 204 fragrances are searchable, and the
+map is at the foot of the page. There is no cart and no online payment — people
+call or WhatsApp, or come in.
 
 ## Viewing it
 
@@ -17,15 +17,6 @@ python3 -m http.server 8000
 
 To publish, upload the whole folder to any static host — Vercel, Netlify,
 Cloudflare Pages, or ordinary shared hosting.
-
-## Two things to check before you show it to customers
-
-1. **The shop address.** The Contact section and the structured data both say
-   *Dolphins Leap Centre, Humewood Road, Summerstrand, Gqeberha*. That was
-   carried over from the existing Son of the Middle East site — confirm it is
-   still right, or change it in `index.html` (search for `Dolphins`).
-2. **The fragrance list.** 204 names, transcribed from the list you sent. A few
-   entries were tidied or merged — see *What was changed in the list* below.
 
 ## Changing the fragrances
 
@@ -48,8 +39,8 @@ only file you need. Each fragrance is one line:
 | `unisex` | Unisex |
 
 Copy a line, paste it, edit it. Order doesn't matter — the page sorts
-alphabetically and builds the A–Z rail itself, and the counts on the buttons and
-in the search box update on their own.
+alphabetically and builds the A–Z rail itself, and the counts in the search box
+and under the filters update on their own.
 
 ## Changing the prices
 
@@ -63,20 +54,42 @@ const SIZES = [
 ];
 ```
 
-Add or remove a size and the price panels follow. Prices are deliberately not
-attached to individual fragrances — the whole point of the Prices section is
-that they aren't.
+Add or remove a size and the price panels follow.
 
 ## Changing the shop details
 
-Phone number, Instagram, TikTok and address are in `index.html`. The number
-appears in several places (the WhatsApp buttons, the phone link, the structured
-data near the top), so search for `5264` to find them all.
+Phone, WhatsApp, Instagram, TikTok, address and opening hours are all in
+`index.html`.
 
-## What was changed in the list
+- The number appears in five places — the two WhatsApp buttons, the phone link,
+  the contact rows and the structured data at the top. Search for `5264` to find
+  them all. Every WhatsApp link points at `wa.me/27631425264`.
+- Opening hours are the `<ul class="hours">` block. Each row carries a
+  `data-day` number (Sunday is `0`, Monday `1`, through Saturday `6`); the page
+  reads the visitor's own clock and marks the right row **Today** by itself.
+  The same hours are repeated in the structured data near the top of the file —
+  change both if they move.
+- The address appears in the Visit rows, the map panel, the map link and the
+  structured data.
+
+## The map
+
+The map at the foot of the page is a keyless Google Maps embed pointed at
+*Moffett On Main, 17th Ave, Walmer, Gqeberha, 6070*. Two things to know:
+
+1. **Check it once it is live.** The embed could not be loaded from the machine
+   this was built on, so the pin has not been seen with human eyes. If it lands
+   in the wrong spot, replace the `src` on `<iframe class="map__frame">` with an
+   embed URL copied from Google Maps → Share → Embed a map.
+2. **It degrades on purpose.** The address panel, the postcode and the *Open in
+   Google Maps* button are always on the page, not a fallback that appears when
+   the embed fails. If a visitor's network, extension or company policy blocks
+   Google, the section still tells them where the shop is.
+
+## What was changed in the fragrance list
 
 Your list had a few entries twice under slightly different names. These were
-merged so the index doesn't show the same scent twice:
+merged so the collection doesn't show the same scent twice:
 
 | In your list | On the site |
 |---|---|
@@ -95,6 +108,8 @@ out. Add it back in `catalogue.js` if it's a real bottle.
 both collections, so they're tagged **Ladies · Gentlemen** — one row, both
 shelves.
 
+That leaves **204** fragrances.
+
 ## How it is put together
 
 | File | What it does |
@@ -103,14 +118,16 @@ shelves.
 | `assets/css/site.css` | All styling; the design tokens are at the top |
 | `assets/css/fonts.css` | Self-hosted font declarations — do not edit |
 | `assets/js/catalogue.js` | Fragrances and prices — **edit this one** |
-| `assets/js/site.js` | The film, the scroll, the search |
+| `assets/js/site.js` | The film, the scroll, the search, today's hours |
 | `assets/fonts/` | Marcellus and Jost, self-hosted (no Google requests) |
 | `assets/img/`, `assets/video/` | Brand imagery and the film |
 
-The film ships twice — `film.mp4` (H.264) and `film.webm` (VP9) — so it plays
-everywhere. Browsers download only the first one they can play. The untouched
-original is in `../references/ghazi-oriental/`; re-encode from that if you ever
-need different dimensions.
+Every image on the site comes out of the brand film: the wordmark, the
+arabesque behind the promise, the favicon and the poster frame. Nothing else is
+used. The film ships twice — `film.mp4` (H.264) and `film.webm` (VP9) — so it
+plays everywhere; browsers download only the first one they can play. The
+untouched original is in `../references/ghazi-oriental/`; re-encode from that if
+you ever need different dimensions.
 
 ## Design notes
 
@@ -118,20 +135,19 @@ need different dimensions.
   "luxury": the deep emerald of the end card (`#04100E`, `#08211E`), the gold of
   the arabesque (`#C9A24D`), the cream of the wordmark (`#F2EADB`).
 - **Type** is Marcellus for headings — Roman inscriptional capitals, carved
-  rather than fashionable — with Jost for everything else. Prices are set in
-  tabular figures so the three panels line up.
-- **The signature is the film.** It sits in a drawn arch and is scrubbed
-  frame-by-frame by the scroll wheel, so the bottle turns as you read. If a
-  browser can't seek smoothly, the film notices within a second and quietly
-  falls back to looping — the words still change with the scroll either way.
-- **The index is the other half of the job.** 204 names is only useful if it can
-  be searched, so it is: type any part of a name, filter by collection, and the
-  match is marked in gold.
+  rather than fashionable — with Jost for everything else. Prices and hours are
+  set in tabular figures so the columns line up.
+- **The film plays on its own**, muted and looping, from the moment the page
+  opens. It sits in a drawn ogee arch — the same arch clips the video and draws
+  the gold line around it, so they can never drift apart.
+- **The collection is searchable**, because 204 names is only useful if it can
+  be. Type any part of a name, filter by collection, and the match is marked in
+  gold. Choosing Ladies or Gentlemen brings up that collection's own line.
 
 ## Accessibility
 
 Checked and passing: text contrast (no failures at WCAG AA — the lightest pair
 is gold on the raised band at 6.0:1), sequential heading order, image alt text,
 visible keyboard focus, pointer targets at 24 px minimum, and
-`prefers-reduced-motion` — which turns the pinned film into a still poster,
-stops the reveals, and pauses the video.
+`prefers-reduced-motion` — which holds the film on its poster frame and stops
+the reveals.
