@@ -1021,7 +1021,12 @@ b { font-weight: 600; color: var(--cream); }
   background: var(--deep);
 }
 
-.map__stage { position: relative; }
+/* the stage holds the section's height itself, so the panel behind the embed
+   still stands up if an extension or a content policy removes the iframe */
+.map__stage {
+  position: relative;
+  min-height: clamp(300px, 44vh, 440px);
+}
 
 .map__frame {
   position: relative;
@@ -1103,7 +1108,8 @@ b { font-weight: 600; color: var(--cream); }
     background: rgba(4, 16, 14, .94);
     backdrop-filter: blur(8px);
   }
-  .map__frame { height: clamp(380px, 54vh, 540px); }
+  .map__frame,
+  .map__stage { height: clamp(380px, 54vh, 540px); min-height: 0; }
 }
 
 /* --------------------------------------------------------------------------
