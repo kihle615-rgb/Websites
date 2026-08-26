@@ -1,7 +1,7 @@
 /* ==========================================================================
    GHAZI ORIENTAL  —  page behaviour
    --------------------------------------------------------------------------
-   Seven small jobs:
+   Eight small jobs:
 
      1. hold a preloader until the film has frames to show
      2. let the film play, and stop it for anyone who asks for less motion
@@ -9,7 +9,8 @@
      4. keep the bar, the chapter readout and the reveals in step with scroll
      5. print the price list from SIZES
      6. print and filter the collection from FRAGRANCES, and mark today's hours
-     7. fill every count on the page from the data, so it can never go stale
+     7. fall back to the placeholder art if a product photograph will not load
+     8. fill every count on the page from the data, so it can never go stale
 
    Product data lives in catalogue.js. Nothing in here needs editing to
    change a fragrance or a price.
@@ -447,7 +448,26 @@
 
 
   /* ------------------------------------------------------------------------
-     9. THE COUNTS
+     9. THE PRODUCT PHOTOGRAPHS
+     Each plate is served from the shop's media CDN with a local file behind
+     it. If the photograph cannot be fetched — the CDN is down, the visitor
+     is offline, a content policy blocks the host — the plate quietly falls
+     back to its placeholder and says so, rather than showing a broken image.
+     ---------------------------------------------------------------------- */
+
+  $$('.plate img[data-fallback]').forEach(function (img) {
+    img.addEventListener('error', function () {
+      var local = img.getAttribute('data-fallback');
+      if (!local || img.getAttribute('src') === local) return;
+      img.setAttribute('src', local);
+      var plate = img.closest('.plate');
+      if (plate) plate.setAttribute('data-photo', 'placeholder');
+    });
+  });
+
+
+  /* ------------------------------------------------------------------------
+     10. THE COUNTS
      Every number quoted in the copy is filled from the data, so editing
      catalogue.js can never leave a stale figure on the page.
      ---------------------------------------------------------------------- */

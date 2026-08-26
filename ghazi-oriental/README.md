@@ -20,33 +20,41 @@ Cloudflare Pages, or ordinary shared hosting.
 
 ---
 
-## FIRST THING TO DO: the five bottle photographs
+## The five product photographs
 
-The product plates currently show **placeholders** — an emerald panel with the
-brand arabesque and a gold arch. Each one carries a small *Photo to come* chip
-so nobody mistakes them for real product shots.
+Each plate loads its photograph from the shop's media CDN:
 
-To put the real photographs in:
+```
+https://d8j0ntlcm91z4.cloudfront.net/user_3HmYniPCTtYjteyTOhNw7cCb8VU/hf_...png
+```
 
-1. Save your five bottle images over these files, keeping the names:
+The `<img>` for each plate carries that URL as its `src` and a `data-fallback`
+pointing at a local file in `assets/img/bottles/`. If the photograph cannot be
+fetched — the CDN is down, the visitor is offline, a content policy blocks the
+host — the plate swaps to the local placeholder and shows a *Photo to come*
+chip, rather than a broken image. Nothing to configure; it is automatic.
 
-   | File | What it should show |
-   |---|---|
-   | `assets/img/bottles/bottle-1.jpg` | The tall clear column with the domed gold cap |
-   | `assets/img/bottles/bottle-2.jpg` | The faceted crystal flacon with the cut gold stopper |
-   | `assets/img/bottles/bottle-3.jpg` | The pink bottles with gold medallions — Ladies |
-   | `assets/img/bottles/bottle-4.jpg` | The black and green bottles in smoke — Gentlemen |
-   | `assets/img/bottles/bottle-5.jpg` | The emerald bottle with the filigree dome, oud wood and roses |
+**Two things worth doing before this is a real production site:**
 
-   Portrait, 4:5, around 900 × 1125 px or larger. They are cropped to 4:5, so
-   keep the bottle centred.
+1. **Check the order.** The five URLs were mapped to the five plates in the
+   order they were sent — clear column, crystal flacon, pink trio, dark trio,
+   emerald oud bottle. That mapping has not been verified with human eyes,
+   because the CDN is unreachable from the machine this was built on. Open the
+   Products section, and if two plates are swapped, swap their `src` values in
+   `index.html`.
 
-2. In `index.html`, find `<ol class="plates" id="plates" data-photos="placeholder">`
-   and change **`placeholder`** to **`real`**. All five *Photo to come* chips
-   disappear at once.
+2. **Make it self-contained.** A website that depends on somebody else's CDN
+   breaks the day that CDN changes. Download each photograph over its matching
+   `assets/img/bottles/bottle-N.jpg`, then delete the CDN URL from that
+   plate's `src` and put `assets/img/bottles/bottle-N.jpg` in its place. The
+   fallback machinery does no harm if you leave it, and the site then owns
+   every byte it serves.
 
-That is the whole job — the captions and facts underneath already match what
-each photograph shows.
+They are cropped to 4:5 and centred, so a portrait or square original both work.
+
+**They will not appear inside a Claude preview link.** That sandbox blocks
+every external host by design, so the preview shows the placeholder panels.
+On your own hosting — or a local `python3 -m http.server` — they load normally.
 
 ---
 

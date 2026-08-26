@@ -158,14 +158,19 @@
       </p>
     </div>
 
-    <!-- change data-photos to "real" once the shop's own photographs replace
-         assets/img/bottles/bottle-1..5.jpg, and the "photo to come" chips go -->
-    <ol class="plates" id="plates" data-photos="placeholder">
+    <!-- Each photograph is served from the shop's own media CDN. The local
+         file in assets/img/bottles/ is the fallback: if the CDN is ever
+         unreachable the plate falls back to it and says so, instead of
+         showing a broken image. To make the site self-contained, download
+         each data-photo URL over its bottle-N.jpg and swap the two. -->
+    <ol class="plates" id="plates">
 
       <li class="plate" data-reveal>
         <figure class="plate__figure">
-          <img src="assets/img/bottles/bottle-1.jpg" alt="The Eau de Parfum: a tall clear glass column with a domed gold cap."
-               width="900" height="1125" loading="lazy">
+          <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3HmYniPCTtYjteyTOhNw7cCb8VU/hf_20260825_195325_6eea9461-4be7-4fa9-8bc7-ff3c463baf3a.png"
+               data-fallback="assets/img/bottles/bottle-1.jpg"
+               referrerpolicy="no-referrer" alt="The Eau de Parfum: a tall clear glass column with a domed gold cap."
+               loading="lazy">
           <span class="plate__num" aria-hidden="true">01</span>
           <span class="plate__todo">Photo to come</span>
         </figure>
@@ -184,8 +189,10 @@
 
       <li class="plate" data-reveal>
         <figure class="plate__figure">
-          <img src="assets/img/bottles/bottle-2.jpg" alt="The Crystal: a faceted glass flacon with a cut gold stopper."
-               width="900" height="1125" loading="lazy">
+          <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3HmYniPCTtYjteyTOhNw7cCb8VU/hf_20260825_195326_af9568cb-8204-4238-afaa-87ac154e7920.png"
+               data-fallback="assets/img/bottles/bottle-2.jpg"
+               referrerpolicy="no-referrer" alt="The Crystal: a faceted glass flacon with a cut gold stopper."
+               loading="lazy">
           <span class="plate__num" aria-hidden="true">02</span>
           <span class="plate__todo">Photo to come</span>
         </figure>
@@ -203,8 +210,10 @@
 
       <li class="plate" data-reveal>
         <figure class="plate__figure">
-          <img src="assets/img/bottles/bottle-3.jpg" alt="The Ladies Collection: rose-pink bottles with gold medallions on a marble tray."
-               width="900" height="1125" loading="lazy">
+          <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3HmYniPCTtYjteyTOhNw7cCb8VU/hf_20260825_195023_a10059dc-4f14-4bdf-93f2-0c952131f8ce.png"
+               data-fallback="assets/img/bottles/bottle-3.jpg"
+               referrerpolicy="no-referrer" alt="The Ladies Collection: rose-pink bottles with gold medallions on a marble tray."
+               loading="lazy">
           <span class="plate__num" aria-hidden="true">03</span>
           <span class="plate__todo">Photo to come</span>
         </figure>
@@ -223,8 +232,10 @@
 
       <li class="plate" data-reveal>
         <figure class="plate__figure">
-          <img src="assets/img/bottles/bottle-4.jpg" alt="The Gentlemen Collection: black and dark green bottles with brushed gold caps, lit through smoke."
-               width="900" height="1125" loading="lazy">
+          <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3HmYniPCTtYjteyTOhNw7cCb8VU/hf_20260825_195024_338b908a-9c49-494c-9487-2fa06a6dfb8a.png"
+               data-fallback="assets/img/bottles/bottle-4.jpg"
+               referrerpolicy="no-referrer" alt="The Gentlemen Collection: black and dark green bottles with brushed gold caps, lit through smoke."
+               loading="lazy">
           <span class="plate__num" aria-hidden="true">04</span>
           <span class="plate__todo">Photo to come</span>
         </figure>
@@ -243,8 +254,10 @@
 
       <li class="plate" data-reveal>
         <figure class="plate__figure">
-          <img src="assets/img/bottles/bottle-5.jpg" alt="Oud and Attar: an emerald bottle with a filigree gold dome, among agarwood chips, amber resin and dried roses."
-               width="900" height="1125" loading="lazy">
+          <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3HmYniPCTtYjteyTOhNw7cCb8VU/hf_20260825_195024_e6a86217-f202-4777-aefd-724d5544ce91.png"
+               data-fallback="assets/img/bottles/bottle-5.jpg"
+               referrerpolicy="no-referrer" alt="Oud and Attar: an emerald bottle with a filigree gold dome, among agarwood chips, amber resin and dried roses."
+               loading="lazy">
           <span class="plate__num" aria-hidden="true">05</span>
           <span class="plate__todo">Photo to come</span>
         </figure>
