@@ -18,6 +18,44 @@ python3 -m http.server 8000
 To publish, upload the whole folder to any static host — Vercel, Netlify,
 Cloudflare Pages, or ordinary shared hosting.
 
+## Where it is live
+
+**https://ghazi-oriental-uaa-agency.vercel.app**
+
+That is a Vercel production deployment on the *UAA agency* team. It was pushed
+as files rather than linked to this repository, because the deploy route
+available here carries text, not binaries. So the split is:
+
+| Served by Vercel | Served by jsDelivr |
+|---|---|
+| `index.html`, `site.css`, `fonts.css`, `site.js`, `catalogue.js` | the fonts, the wordmark, the favicon, the arabesque, the poster frame and the film |
+
+The jsDelivr URLs point at this repository pinned to commit `5a461f6`:
+
+```
+https://cdn.jsdelivr.net/gh/kihle615-rgb/Websites@5a461f61015fc1413494617b0c535d6945710a9e/ghazi-oriental/assets/…
+```
+
+Pinning to a commit means the CDN can cache them forever and they can never
+change under the site. **It also means a new commit does not reach the live
+page** — if you replace the film or the logo, the URLs in `index.html` and
+`fonts.css` have to be repointed at the new commit.
+
+### Moving it onto a proper Git deployment
+
+The better long-term setup is a Vercel project linked to this repository, which
+serves every file itself and rebuilds on every push — no CDN, no pinned commit.
+It could not be created from here (Vercel could not verify the repository link),
+so it takes two clicks in the dashboard:
+
+1. Vercel → **Add New… → Project** → import `kihle615-rgb/Websites`.
+2. Set **Root Directory** to `ghazi-oriental`, and set the production branch to
+   whichever branch carries this folder.
+
+Framework preset is *Other*; there is no build command and no output directory.
+Once that project exists, `index.html` and `fonts.css` can drop the jsDelivr
+URLs and go back to plain `assets/…` paths.
+
 ---
 
 ## The five bottles
@@ -184,11 +222,10 @@ That leaves **204** fragrances.
 | `assets/img/`, `assets/video/` | Brand imagery and the film |
 
 Every image on the site comes out of the brand film: the wordmark, the
-arabesque, the favicon and the poster frame. The film ships twice —
-`film.mp4` (H.264) and `film.webm` (VP9) — so it plays everywhere; browsers
-download only the first one they can play. The untouched original is in
-`../references/ghazi-oriental/`; re-encode from that if you ever need different
-dimensions.
+arabesque, the favicon and the poster frame. The film ships once, as
+`film.mp4` (H.264), which every current browser plays. The untouched original is
+in `../references/ghazi-oriental/`; re-encode from that if you ever need
+different dimensions.
 
 ## Design notes
 
