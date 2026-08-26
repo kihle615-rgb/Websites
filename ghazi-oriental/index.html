@@ -12,7 +12,7 @@
 <meta property="og:description" content="Luxury fragrance collection. Elegance, class, identity. Available in store and online, Walmer, Gqeberha.">
 <meta property="og:image" content="assets/img/film-poster.jpg">
 
-<link rel="preload" href="assets/fonts/marcellus-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/chakra-petch-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/jost-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -76,25 +76,36 @@
 
 <div class="grain" aria-hidden="true"></div>
 
-<!-- fixed bar -->
+<!-- ── fixed bar with the dropdown menu ──────────────────────────────────── -->
 <header class="bar" id="bar">
   <a class="bar__brand" href="#top">
     <img class="bar__logo" src="assets/img/ghazi-wordmark.png" alt="Ghazi Oriental"
          width="476" height="182">
   </a>
 
-  <nav class="bar__nav" id="nav" aria-label="Sections">
-    <a href="#promise">The promise</a>
-    <a href="#prices">Prices</a>
-    <a href="#collection">The collection</a>
-    <a href="#visit">Visit</a>
-  </nav>
+  <div class="menu" id="menu">
+    <button class="menu__btn" id="menuBtn" type="button"
+            aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
+      <span class="menu__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="menu__label">Menu</span>
+    </button>
 
-  <a class="btn btn--gold" href="https://wa.me/27631425264">WhatsApp</a>
+    <div class="menu__panel" id="menuPanel" hidden>
+      <ul class="menu__list">
+        <li><a href="#bottles"><span class="menu__item">Products</span><span class="menu__hint">The bottles and the shelf</span></a></li>
+        <li><a href="#about"><span class="menu__item">About us</span><span class="menu__hint">Who we are</span></a></li>
+        <li><a href="#different"><span class="menu__item">Why we're different</span><span class="menu__hint">What you are actually buying</span></a></li>
+        <li><a href="#history"><span class="menu__item">The history</span><span class="menu__hint">Three thousand years of it</span></a></li>
+        <li><a href="#contact"><span class="menu__item">Contact us</span><span class="menu__hint">Call, message or come in</span></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <a class="btn btn--gold bar__cta" href="https://wa.me/27631425264">WhatsApp</a>
 </header>
 
 <p class="chapter" id="chapter" aria-hidden="true">
-  <span class="chapter__num" id="chapterNum">I</span>
+  <span class="chapter__num" id="chapterNum">01</span>
   <span class="chapter__name" id="chapterName">Ghazi Oriental</span>
 </p>
 
@@ -127,7 +138,7 @@
       <p class="hero__creed">Elegance &middot; Class &middot; Identity</p>
       <div class="hero__actions">
         <a class="btn btn--gold" href="https://wa.me/27631425264">Message us on WhatsApp</a>
-        <a class="btn btn--ghost" href="#collection">See the collection</a>
+        <a class="btn btn--ghost" href="#bottles">See the products</a>
       </div>
     </div>
 
@@ -135,35 +146,122 @@
   </div>
 </section>
 
-<!-- ══ SIGNATURE PROMISE ══════════════════════════════════════════════════ -->
-<section class="section section--band house" id="promise" aria-labelledby="promiseTitle">
-  <img class="house__mandala" id="mandala" src="assets/img/mandala.png" alt=""
-       width="600" height="600" loading="lazy" aria-hidden="true">
-
+<!-- ══ PRODUCTS — THE BOTTLES ═════════════════════════════════════════════ -->
+<section class="section section--band" id="bottles" aria-labelledby="bottlesTitle">
   <div class="wrap">
     <div class="section__head" data-reveal>
-      <p class="eyebrow">Signature promise</p>
-      <h2 class="h2" id="promiseTitle">Elegance. Class.<br>Identity.</h2>
+      <p class="eyebrow">Products</p>
+      <h2 class="h2" id="bottlesTitle">Five plates from the shelf.</h2>
+      <p class="lede">
+        Every bottle is filled to order in 30, 50 or 100 ml. What changes is the
+        glass, the cap and what is inside it.
+      </p>
     </div>
 
-    <ul class="pillars">
-      <li class="pillar" data-reveal>
-        <span class="pillar__word">Long-lasting</span>
-        <p>luxury fragrances</p>
+    <!-- change data-photos to "real" once the shop's own photographs replace
+         assets/img/bottles/bottle-1..5.jpg, and the "photo to come" chips go -->
+    <ol class="plates" id="plates" data-photos="placeholder">
+
+      <li class="plate" data-reveal>
+        <figure class="plate__figure">
+          <img src="assets/img/bottles/bottle-1.jpg" alt="The Eau de Parfum: a tall clear glass column with a domed gold cap."
+               width="900" height="1125" loading="lazy">
+          <span class="plate__num" aria-hidden="true">01</span>
+          <span class="plate__todo">Photo to come</span>
+        </figure>
+        <div class="plate__body">
+          <h3 class="h3">The Eau de Parfum</h3>
+          <p>A clear glass column, a gold collar and a spray that carries across a
+          room. This is the everyday bottle — the one that lives on the dresser
+          and gets used.</p>
+          <ul class="facts">
+            <li>30 / 50 / 100 ml</li>
+            <li>Alcohol-based spray</li>
+            <li>From R100</li>
+          </ul>
+        </div>
       </li>
-      <li class="pillar" data-reveal style="--delay:90ms">
-        <span class="pillar__word">Designer-inspired</span>
-        <p>excellence</p>
+
+      <li class="plate" data-reveal>
+        <figure class="plate__figure">
+          <img src="assets/img/bottles/bottle-2.jpg" alt="The Crystal: a faceted glass flacon with a cut gold stopper."
+               width="900" height="1125" loading="lazy">
+          <span class="plate__num" aria-hidden="true">02</span>
+          <span class="plate__todo">Photo to come</span>
+        </figure>
+        <div class="plate__body">
+          <h3 class="h3">The Crystal</h3>
+          <p>Cut glass, a faceted stopper, weight in the hand. The same fragrances
+          in a bottle that looks like the gift it is meant to be.</p>
+          <ul class="facts">
+            <li>Gift presentation</li>
+            <li>Faceted flacon</li>
+            <li>Ask in store</li>
+          </ul>
+        </div>
       </li>
-      <li class="pillar" data-reveal style="--delay:180ms">
-        <span class="pillar__word">Affordable</span>
-        <p>elegance</p>
+
+      <li class="plate" data-reveal>
+        <figure class="plate__figure">
+          <img src="assets/img/bottles/bottle-3.jpg" alt="The Ladies Collection: rose-pink bottles with gold medallions on a marble tray."
+               width="900" height="1125" loading="lazy">
+          <span class="plate__num" aria-hidden="true">03</span>
+          <span class="plate__todo">Photo to come</span>
+        </figure>
+        <div class="plate__body">
+          <h3 class="h3">Ladies Collection</h3>
+          <p class="plate__creed">Sophisticated. Timeless. Captivating.</p>
+          <p>Florals, gourmands and musks — the shelf people come back for, from
+          the names you already wear to the Lattafa bottles you may not know yet.</p>
+          <ul class="facts">
+            <li><b data-count="her">—</b> fragrances</li>
+            <li>Florals, gourmands, musks</li>
+            <li>From R100</li>
+          </ul>
+        </div>
       </li>
-      <li class="pillar" data-reveal style="--delay:270ms">
-        <span class="pillar__word">Crafted</span>
-        <p>for every occasion</p>
+
+      <li class="plate" data-reveal>
+        <figure class="plate__figure">
+          <img src="assets/img/bottles/bottle-4.jpg" alt="The Gentlemen Collection: black and dark green bottles with brushed gold caps, lit through smoke."
+               width="900" height="1125" loading="lazy">
+          <span class="plate__num" aria-hidden="true">04</span>
+          <span class="plate__todo">Photo to come</span>
+        </figure>
+        <div class="plate__body">
+          <h3 class="h3">Gentlemen Collection</h3>
+          <p class="plate__creed">Bold. Refined. Powerful.</p>
+          <p>Woods, spice and leather, and the fresh blues for daylight. The
+          largest shelf in the shop, and the one that moves fastest.</p>
+          <ul class="facts">
+            <li><b data-count="him">—</b> fragrances</li>
+            <li>Woods, spice, fresh</li>
+            <li>From R100</li>
+          </ul>
+        </div>
       </li>
-    </ul>
+
+      <li class="plate" data-reveal>
+        <figure class="plate__figure">
+          <img src="assets/img/bottles/bottle-5.jpg" alt="Oud and Attar: an emerald bottle with a filigree gold dome, among agarwood chips, amber resin and dried roses."
+               width="900" height="1125" loading="lazy">
+          <span class="plate__num" aria-hidden="true">05</span>
+          <span class="plate__todo">Photo to come</span>
+        </figure>
+        <div class="plate__body">
+          <h3 class="h3">Oud &amp; Attar</h3>
+          <p>Agarwood, amber resin and rose — the oriental end of the shelf, and
+          the reason the shop is called what it is. Worn close, a little at a
+          time, on the pulse points.</p>
+          <ul class="facts">
+            <li><b data-count="oud">—</b> oud fragrances</li>
+            <li><b data-count="unisex">—</b> worn by anyone</li>
+            <li>From R100</li>
+          </ul>
+        </div>
+      </li>
+
+    </ol>
   </div>
 </section>
 
@@ -183,7 +281,7 @@
 <section class="section section--band" id="collection" aria-labelledby="collectionTitle">
   <div class="wrap">
     <div class="section__head" data-reveal>
-      <p class="eyebrow">The collection</p>
+      <p class="eyebrow">The shelf</p>
       <h2 class="h2" id="collectionTitle">Ladies and gentlemen.</h2>
     </div>
 
@@ -218,12 +316,153 @@
   </div>
 </section>
 
-<!-- ══ VISIT ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="visit" aria-labelledby="visitTitle">
+<!-- ══ ABOUT US ═══════════════════════════════════════════════════════════ -->
+<section class="section house" id="about" aria-labelledby="aboutTitle">
+  <img class="house__mandala" id="mandala" src="assets/img/mandala.png" alt=""
+       width="600" height="600" loading="lazy" aria-hidden="true">
+
+  <div class="wrap house__grid">
+    <div data-reveal>
+      <p class="eyebrow">About us</p>
+      <h2 class="h2" id="aboutTitle">A counter in Walmer,<br>and two hundred bottles.</h2>
+    </div>
+
+    <div class="prose" data-reveal style="--delay:120ms">
+      <p><b>Ghazi Oriental</b> is a fragrance shop at Moffett On Main, 17th Avenue,
+      Walmer. We carry <b data-count="all">—</b> designer-inspired luxury fragrances
+      across the ladies, gentlemen and unisex shelves, filled to order in three
+      sizes.</p>
+      <p>Nothing here is sold at a mystery price. Every bottle costs what its size
+      costs — R100, R150 or R250 — whether the accord on the shelf is famous or
+      not. Come in and try one on skin, or send us the name you are after and we
+      will tell you what is in stock before you travel.</p>
+      <p class="signoff">Wear Confidence. Leave a Legacy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY WE ARE DIFFERENT ═══════════════════════════════════════════════ -->
+<section class="section section--band" id="different" aria-labelledby="differentTitle">
   <div class="wrap">
     <div class="section__head" data-reveal>
-      <p class="eyebrow">Visit</p>
-      <h2 class="h2" id="visitTitle">Available in store<br>&amp; online.</h2>
+      <p class="eyebrow">Why we're different</p>
+      <h2 class="h2" id="differentTitle">Four things we promise.</h2>
+    </div>
+
+    <ol class="reasons">
+      <li class="reason" data-reveal>
+        <span class="reason__num" aria-hidden="true">01</span>
+        <h3 class="h3">Long-lasting luxury fragrances</h3>
+        <p>Staying power is a matter of concentration. An eau de parfum carries
+        roughly 15–20% fragrance oil where an eau de toilette carries 5–15% — which
+        is why one is still on your collar at six and the other has gone by
+        lunchtime.</p>
+      </li>
+
+      <li class="reason" data-reveal style="--delay:90ms">
+        <span class="reason__num" aria-hidden="true">02</span>
+        <h3 class="h3">Designer-inspired excellence</h3>
+        <p>Every bottle is built to an accord you already know. We tell you which
+        one. You are paying for what is in the glass rather than for the name
+        printed on it.</p>
+      </li>
+
+      <li class="reason" data-reveal style="--delay:180ms">
+        <span class="reason__num" aria-hidden="true">03</span>
+        <h3 class="h3">Affordable elegance</h3>
+        <p>R100, R150 or R250. The price follows the size of the bottle and
+        nothing else — the oud costs what the citrus costs.</p>
+      </li>
+
+      <li class="reason" data-reveal style="--delay:270ms">
+        <span class="reason__num" aria-hidden="true">04</span>
+        <h3 class="h3">Crafted for every occasion</h3>
+        <p>Fresh and blue for the office, oud and amber after dark, something
+        soft for a room you want to be remembered in. <b data-count="all">—</b> on the
+        shelf means there is one for the day you are having.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══ THE HISTORY ════════════════════════════════════════════════════════ -->
+<section class="section" id="history" aria-labelledby="historyTitle">
+  <div class="wrap">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">The history</p>
+      <h2 class="h2" id="historyTitle">Perfume is older<br>than the alphabet.</h2>
+      <p class="lede">
+        The oriental family — resin, amber, wood and spice — is named after the
+        trade routes it came down. Here is the short version.
+      </p>
+    </div>
+
+    <ol class="era">
+      <li class="era__item" data-reveal>
+        <span class="era__when">c. 1200 BC</span>
+        <div class="era__body">
+          <h3 class="h3">The first chemist we can name</h3>
+          <p>A cuneiform tablet from Mesopotamia records a woman called Tapputi
+          distilling flowers, oil and calamus into perfume. She is the earliest
+          chemist known anywhere by name, and she was a perfumer.</p>
+        </div>
+      </li>
+
+      <li class="era__item" data-reveal>
+        <span class="era__when">9th century</span>
+        <div class="era__body">
+          <h3 class="h3">The first recipe book</h3>
+          <p>Al-Kindi, working in Baghdad, wrote the <i>Book of the Chemistry of
+          Perfume and Distillations</i> — more than a hundred formulas for scented
+          oils, salves and waters, and the equipment to make them.</p>
+        </div>
+      </li>
+
+      <li class="era__item" data-reveal>
+        <span class="era__when">c. 1000 AD</span>
+        <div class="era__body">
+          <h3 class="h3">Rose, distilled</h3>
+          <p>Ibn Sina — Avicenna — refined steam distillation to pull the oil from
+          rose petals without scorching them. Rose water has been made essentially
+          his way for a thousand years since.</p>
+        </div>
+      </li>
+
+      <li class="era__item" data-reveal>
+        <span class="era__when">16th–17th century</span>
+        <div class="era__body">
+          <h3 class="h3">Attar down the trade routes</h3>
+          <p>Oil-based perfume — attar, worn a drop at a time rather than sprayed —
+          moved between Arabia, Persia and Mughal India along the same roads as
+          agarwood, frankincense and myrrh, long before alcohol perfumery reached
+          Europe.</p>
+        </div>
+      </li>
+
+      <li class="era__item" data-reveal>
+        <span class="era__when">Today</span>
+        <div class="era__body">
+          <h3 class="h3">Oud, and what it costs</h3>
+          <p>Oud is the dark resin an Aquilaria tree lays down when its heartwood
+          is infected by a mould. Only a small share of wild trees ever make it,
+          which is why the best grades trade for more by weight than gold — and why
+          a good oud accord is worth knowing how to recognise.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══ CONTACT US ═════════════════════════════════════════════════════════ -->
+<section class="section section--band" id="contact" aria-labelledby="contactTitle">
+  <div class="wrap">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">Contact us</p>
+      <h2 class="h2" id="contactTitle">Available in store<br>&amp; online.</h2>
+      <div class="actions">
+        <a class="btn btn--gold" href="https://wa.me/27631425264">Message us on WhatsApp</a>
+        <a class="btn btn--ghost" href="tel:+27631425264">Call 063 142 5264</a>
+      </div>
     </div>
 
     <div class="contact__grid">
@@ -277,19 +516,29 @@
     <p class="map__address">
       Moffett On Main<span>17th Ave, Walmer<br>Gqeberha, 6070</span>
     </p>
-    <a class="btn btn--ghost"
-       href="https://www.google.com/maps/search/?api=1&amp;query=Ghazi+Oriental+Moffett+On+Main+17th+Ave+Walmer+Gqeberha">
+    <a class="btn btn--gold"
+       href="https://www.google.com/maps/search/?api=1&amp;query=Ghazi%20Oriental%2C%20Moffett%20On%20Main%2C%2017th%20Ave%2C%20Walmer%2C%20Gqeberha"
+       target="_blank" rel="noopener">
       Open in Google Maps
     </a>
+    <a class="map__dir"
+       href="https://www.google.com/maps/dir/?api=1&amp;destination=Moffett%20On%20Main%2C%2017th%20Ave%2C%20Walmer%2C%20Gqeberha%2C%206070"
+       target="_blank" rel="noopener">Get directions</a>
   </div>
 
-  <div class="map__stage">
+  <div class="map__stage" id="mapStage">
     <div class="map__ground" aria-hidden="true">
+      <svg class="map__pin" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"/>
+        <circle cx="12" cy="10" r="2.6"/>
+      </svg>
       <p>Moffett On Main &middot; 17th Ave, Walmer</p>
     </div>
-    <iframe class="map__frame" title="Map showing Moffett On Main, 17th Ave, Walmer, Gqeberha"
-            src="https://www.google.com/maps?q=Moffett%20On%20Main%2C%2017th%20Ave%2C%20Walmer%2C%20Gqeberha%2C%206070&amp;output=embed"
-            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <iframe class="map__frame" id="mapFrame"
+            title="Map showing Moffett On Main, 17th Ave, Walmer, Gqeberha"
+            src="https://www.google.com/maps?q=Moffett+On+Main,+17th+Ave,+Walmer,+Gqeberha,+6070&amp;z=16&amp;output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
   </div>
 </section>
 
@@ -300,7 +549,7 @@
     <img class="foot__mark" src="assets/img/ghazi-wordmark.png" alt="Ghazi Oriental"
          width="476" height="182" loading="lazy">
     <p class="foot__tag">Wear Confidence. Leave a Legacy.</p>
-    <p class="foot__meta">Walmer, Gqeberha &middot; 063 142 5264 &middot; @ghazioriental</p>
+    <p class="foot__meta">Moffett On Main, Walmer, Gqeberha &middot; 063 142 5264 &middot; @ghazioriental</p>
   </div>
 </footer>
 

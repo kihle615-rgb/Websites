@@ -1,13 +1,15 @@
 /* ==========================================================================
    GHAZI ORIENTAL  —  page behaviour
    --------------------------------------------------------------------------
-   Five small jobs:
+   Seven small jobs:
 
      1. hold a preloader until the film has frames to show
      2. let the film play, and stop it for anyone who asks for less motion
-     3. keep the bar, the chapter readout and the reveals in step with scroll
-     4. print the price list from SIZES
-     5. print and filter the collection from FRAGRANCES, and mark today's hours
+     3. open and close the menu
+     4. keep the bar, the chapter readout and the reveals in step with scroll
+     5. print the price list from SIZES
+     6. print and filter the collection from FRAGRANCES, and mark today's hours
+     7. fill every count on the page from the data, so it can never go stale
 
    Product data lives in catalogue.js. Nothing in here needs editing to
    change a fragrance or a price.
@@ -111,7 +113,58 @@
 
 
   /* ------------------------------------------------------------------------
-     3. SCROLL — bar, chapter readout, mandala
+     3. THE MENU
+     One button, one panel, and the three ways people expect to close it:
+     Escape, a click outside, or choosing something.
+     ---------------------------------------------------------------------- */
+
+  var menu      = $('#menu');
+  var menuBtn   = $('#menuBtn');
+  var menuPanel = $('#menuPanel');
+
+  function setMenu(open) {
+    if (!menuBtn || !menuPanel) return;
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuPanel.hidden = !open;
+    if (open) {
+      var first = menuPanel.querySelector('a');
+      if (first) first.focus();
+    }
+  }
+
+  function menuIsOpen() {
+    return menuBtn && menuBtn.getAttribute('aria-expanded') === 'true';
+  }
+
+  if (menuBtn && menuPanel) {
+    menuBtn.addEventListener('click', function () { setMenu(!menuIsOpen()); });
+
+    menuPanel.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMenu(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !menuIsOpen()) return;
+      setMenu(false);
+      menuBtn.focus();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!menuIsOpen() || menu.contains(e.target)) return;
+      setMenu(false);
+    });
+
+    /* tabbing past the last item closes it, the way a real menu behaves */
+    menuPanel.addEventListener('focusout', function (e) {
+      if (!menuIsOpen()) return;
+      if (e.relatedTarget && menu.contains(e.relatedTarget)) return;
+      setMenu(false);
+    });
+  }
+
+
+  /* ------------------------------------------------------------------------
+     4. SCROLL — bar, chapter readout, mandala
      One listener, one rAF tick, everything reads from it.
      ---------------------------------------------------------------------- */
 
@@ -119,14 +172,17 @@
   var mandala  = $('#mandala');
   var chapNum  = $('#chapterNum');
   var chapName = $('#chapterName');
-  var navLinks = $$('#nav a');
+  var navLinks = $$('#menuPanel a');
 
   var CHAPTERS = [
-    { id: 'top',        num: 'I',   name: 'Ghazi Oriental' },
-    { id: 'promise',    num: 'II',  name: 'The promise' },
-    { id: 'prices',     num: 'III', name: 'Prices' },
-    { id: 'collection', num: 'IV',  name: 'The collection' },
-    { id: 'visit',      num: 'V',   name: 'Visit' }
+    { id: 'top',        num: '01', name: 'Ghazi Oriental' },
+    { id: 'bottles',    num: '02', name: 'Products' },
+    { id: 'prices',     num: '03', name: 'Prices' },
+    { id: 'collection', num: '04', name: 'The shelf' },
+    { id: 'about',      num: '05', name: 'About us' },
+    { id: 'different',  num: '06', name: "Why we're different" },
+    { id: 'history',    num: '07', name: 'The history' },
+    { id: 'contact',    num: '08', name: 'Contact us' }
   ];
 
   var currentChapter = -1;
@@ -171,7 +227,7 @@
 
 
   /* ------------------------------------------------------------------------
-     4. REVEALS
+     5. REVEALS
      ---------------------------------------------------------------------- */
 
   var revealables = $$('[data-reveal]');
@@ -190,7 +246,7 @@
 
 
   /* ------------------------------------------------------------------------
-     5. THE PRICE LIST
+     6. THE PRICE LIST
      ---------------------------------------------------------------------- */
 
   var sizesEl = $('#sizes');
@@ -217,7 +273,7 @@
 
 
   /* ------------------------------------------------------------------------
-     6. OPENING HOURS — pick out today
+     7. OPENING HOURS — pick out today
      ---------------------------------------------------------------------- */
 
   $$('#hours .hour').forEach(function (li) {
@@ -227,7 +283,7 @@
 
 
   /* ------------------------------------------------------------------------
-     7. THE COLLECTION
+     8. THE COLLECTION
      Sort, group by first letter, filter, search. Matches are marked so the
      eye lands on the right row without reading the whole column.
      ---------------------------------------------------------------------- */
@@ -388,6 +444,27 @@
       });
     });
   }
+
+
+  /* ------------------------------------------------------------------------
+     9. THE COUNTS
+     Every number quoted in the copy is filled from the data, so editing
+     catalogue.js can never leave a stale figure on the page.
+     ---------------------------------------------------------------------- */
+
+  var COUNTS = {
+    all:    ALL.length,
+    her:    ALL.filter(function (f) { return f.roles.indexOf('her') > -1; }).length,
+    him:    ALL.filter(function (f) { return f.roles.indexOf('him') > -1; }).length,
+    unisex: ALL.filter(function (f) { return f.roles.indexOf('unisex') > -1; }).length,
+    /* whole word only, so Ariana Grande Cloud is not counted as an oud */
+    oud:    ALL.filter(function (f) { return /\boudh?\b/i.test(f.name); }).length
+  };
+
+  $$('[data-count]').forEach(function (el) {
+    var key = el.getAttribute('data-count');
+    if (COUNTS[key] !== undefined) el.textContent = String(COUNTS[key]);
+  });
 
 
   /* ------------------------------------------------------------------------
