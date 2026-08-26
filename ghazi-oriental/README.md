@@ -1,7 +1,7 @@
 # Ghazi Oriental — website
 
 A one-page site for Ghazi Oriental, Moffett On Main, Walmer, Gqeberha. The film
-plays, five product plates carry the bottles, all 204 fragrances are searchable,
+plays, five drawn bottles stand in lit glass, all 204 fragrances are searchable,
 and the map sits at the foot of the page. There is no cart and no online
 payment — people call or WhatsApp, or come in.
 
@@ -20,41 +20,27 @@ Cloudflare Pages, or ordinary shared hosting.
 
 ---
 
-## The five product photographs
+## The five bottles
 
-Each plate loads its photograph from the shop's media CDN:
+There are no product photographs on the site. The five shapes in the Products
+section are **drawn**, as inline SVG, in the same gold hairline as the arch
+around the film — a waisted column, a faceted flacon, a round flask, a
+rectangular flask and an attar bottle under an onion dome. Each one draws
+itself in as you scroll to it.
 
-```
-https://d8j0ntlcm91z4.cloudfront.net/user_3HmYniPCTtYjteyTOhNw7cCb8VU/hf_...png
-```
+That means the site owns every pixel it serves and has nothing to break: no
+CDN, no missing-image frames, no photography to commission before launch. It
+also scales to any screen without going soft.
 
-The `<img>` for each plate carries that URL as its `src` and a `data-fallback`
-pointing at a local file in `assets/img/bottles/`. If the photograph cannot be
-fetched — the CDN is down, the visitor is offline, a content policy blocks the
-host — the plate swaps to the local placeholder and shows a *Photo to come*
-chip, rather than a broken image. Nothing to configure; it is automatic.
+**To edit a bottle**, find its `<svg class="vessel__art">` in `index.html`. The
+viewBox is `0 0 64 104` — 64 wide, 104 tall, with the bottle standing on the
+bottom edge. Every shape carries `pathLength="1"`, which is what lets one CSS
+rule draw paths of wildly different lengths at the same speed; keep that
+attribute on anything you add.
 
-**Two things worth doing before this is a real production site:**
-
-1. **Check the order.** The five URLs were mapped to the five plates in the
-   order they were sent — clear column, crystal flacon, pink trio, dark trio,
-   emerald oud bottle. That mapping has not been verified with human eyes,
-   because the CDN is unreachable from the machine this was built on. Open the
-   Products section, and if two plates are swapped, swap their `src` values in
-   `index.html`.
-
-2. **Make it self-contained.** A website that depends on somebody else's CDN
-   breaks the day that CDN changes. Download each photograph over its matching
-   `assets/img/bottles/bottle-N.jpg`, then delete the CDN URL from that
-   plate's `src` and put `assets/img/bottles/bottle-N.jpg` in its place. The
-   fallback machinery does no harm if you leave it, and the site then owns
-   every byte it serves.
-
-They are cropped to 4:5 and centred, so a portrait or square original both work.
-
-**They will not appear inside a Claude preview link.** That sandbox blocks
-every external host by design, so the preview shows the placeholder panels.
-On your own hosting — or a local `python3 -m http.server` — they load normally.
+**To use real photographs instead**, replace the `<svg>` inside a
+`.vessel__glass` with an `<img>`. The glass pane, the number, the caption and
+the fact chips underneath all stay as they are.
 
 ---
 
@@ -195,11 +181,10 @@ That leaves **204** fragrances.
 | `assets/js/catalogue.js` | Fragrances and prices — **edit this one** |
 | `assets/js/site.js` | The film, the menu, the search, the counts, today's hours |
 | `assets/fonts/` | Chakra Petch and Jost, self-hosted (no Google requests) |
-| `assets/img/bottles/` | The five product plates — **replace these** |
 | `assets/img/`, `assets/video/` | Brand imagery and the film |
 
-Apart from the five product plates, every image comes out of the brand film: the
-wordmark, the arabesque, the favicon and the poster frame. The film ships twice —
+Every image on the site comes out of the brand film: the wordmark, the
+arabesque, the favicon and the poster frame. The film ships twice —
 `film.mp4` (H.264) and `film.webm` (VP9) — so it plays everywhere; browsers
 download only the first one they can play. The untouched original is in
 `../references/ghazi-oriental/`; re-encode from that if you ever need different
@@ -222,6 +207,15 @@ dimensions.
 - **The numbers are the argument.** 204 on the shelf, 87 and 92 across the two
   collections, 11 oud — all counted live from the data rather than typed into
   the copy.
+- **The page is not one long green corridor.** Two sections invert to a warm
+  bone ground — the price list and the history — which is why the R100/R150/R250
+  panel lands the way it does. A light section does not restyle its contents: it
+  re-points the colour tokens and every rule inside follows, including darkening
+  the label gold, because brand gold on bone is 1.9:1 and unreadable.
+- **The glass is where the modern note is.** The product panes and the four
+  promises are translucent, blurred, lit along the top edge, with a warm bloom
+  behind them so there is something to refract and each bottle stands in its own
+  pool of light.
 
 ## Accessibility
 

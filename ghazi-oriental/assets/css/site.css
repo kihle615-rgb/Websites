@@ -36,6 +36,20 @@
   --gold:       #C9A24D;   /* accent, labels       6.0:1 on --jade */
   --gold-hi:    #EFD79B;   /* highlight */
 
+  /* the light ground, for the sections that break the green */
+  --bone:       #EDE6D8;   /* light page */
+  --bone-2:     #E3D9C6;   /* light raised */
+  --bone-ink:   #101A17;   /* text on bone       14.3:1 */
+  --bone-mute:  #4A5A52;   /* secondary on bone   5.9:1 */
+  --gold-deep:  #6B4E12;   /* the gold that survives a light ground 6.2:1 */
+
+  --amber:      #E2A75C;   /* warm light, for glow only */
+
+  /* glass: a translucent fill and the light along its top edge */
+  --glass:      rgba(242, 234, 219, .06);
+  --glass-line: rgba(242, 234, 219, .16);
+  --glass-lit:  rgba(242, 234, 219, .30);
+
   /* lines and veils */
   --line:       rgba(201, 162, 77, .24);
   --line-soft:  rgba(242, 234, 219, .10);
@@ -353,6 +367,7 @@ b { font-weight: 600; color: var(--cream); }
   left: clamp(1rem, 3vw, 2.25rem);
   bottom: 1.6rem;
   z-index: var(--z-rail);
+  isolation: isolate;
   display: none;
   align-items: baseline;
   gap: .8rem;
@@ -366,9 +381,13 @@ b { font-weight: 600; color: var(--cream); }
 .chapter::before {
   content: '';
   position: absolute;
-  inset: -.9rem -1.6rem;
+  inset: -.5rem -.9rem;
   z-index: -1;
-  background: radial-gradient(ellipse at center, var(--ink) 35%, rgba(4, 16, 14, 0) 78%);
+  border: 1px solid rgba(201, 162, 77, .22);
+  border-radius: 999px;
+  background: rgba(4, 16, 14, .72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .chapter__num {
   color: var(--gold);
@@ -441,6 +460,38 @@ b { font-weight: 600; color: var(--cream); }
 
 .section { padding-block: clamp(4rem, 9vw, var(--s-7)); }
 .section--band { background: var(--deep); }
+
+/* A light section does not restyle its contents — it re-points the tokens and
+   every rule inside follows. Gold at full brightness is invisible on bone
+   (1.9:1), so the label gold darkens with the ground. */
+.section--light {
+  background: var(--bone);
+  color: var(--bone-ink);
+
+  --ink:       var(--bone);
+  --deep:      var(--bone-2);
+  --jade:      var(--bone-2);
+  --cream:     var(--bone-ink);
+  --muted:     var(--bone-mute);
+  --gold:      var(--gold-deep);
+  --gold-hi:   var(--bone-ink);
+  --line:      rgba(16, 26, 23, .20);
+  --line-soft: rgba(16, 26, 23, .11);
+}
+
+/* A warm bloom behind the glass, so there is something for it to refract and
+   the page stops being one flat field of green. */
+.bloom { position: relative; isolation: isolate; }
+.bloom::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(56% 40% at 14% 14%, rgba(226, 167, 92, .22), transparent 70%),
+    radial-gradient(50% 44% at 88% 80%, rgba(201, 162, 77, .17), transparent 70%);
+}
 
 .section__head { margin-bottom: clamp(2rem, 5vw, var(--s-5)); }
 
@@ -567,113 +618,122 @@ b { font-weight: 600; color: var(--cream); }
 }
 
 /* --------------------------------------------------------------------------
-   9. PRODUCTS — THE PLATES
-   Five bottles, alternating side to side, each with its own facts. The number
-   is real information here: they are plates in a sequence.
+   9. PRODUCTS — THE VESSELS
+   Each bottle is drawn rather than photographed, in the same gold hairline as
+   the arch around the film, and sits in a pane of glass. The number is real
+   information: they are a numbered set.
    -------------------------------------------------------------------------- */
 
-.plates {
+.vessels {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: clamp(3rem, 7vw, 5.5rem);
-  counter-reset: plate;
+  gap: clamp(1.25rem, 2.6vw, 1.75rem);
+  grid-template-columns: 1fr;
 }
+@media (min-width: 40rem) { .vessels { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 64rem) { .vessels { grid-template-columns: repeat(3, 1fr); } }
 
-.plate {
-  display: grid;
-  gap: var(--s-4);
-  align-items: center;
-}
+.vessel { display: grid; gap: var(--s-3); align-content: start; }
 
-.plate__figure {
+/* the pane */
+.vessel__glass {
   position: relative;
-  margin: 0;
-  border: 1px solid var(--line);
-  background: var(--ink);
+  display: grid;
+  place-items: center;
+  padding: clamp(1.75rem, 4vw, 2.5rem) 1rem;
+  border: 1px solid var(--glass-line);
+  border-radius: 3px;
+  background:
+    linear-gradient(158deg, rgba(242, 234, 219, .13), rgba(242, 234, 219, .02) 48%),
+    var(--glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  isolation: isolate;
   overflow: hidden;
-}
-.plate__figure img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  background: var(--ink);
+  transition: border-color var(--mid) var(--ease);
 }
 
-/* photographs arrive on their own grounds — some bright, some near-black.
-   A hairline inside the frame ties them to the page without touching them. */
-.plate__figure::after {
+/* the light along the top edge is what makes glass read as glass */
+.vessel__glass::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-lit) 22%, var(--glass-lit) 78%, transparent);
+}
+
+/* the light the bottle stands in */
+.vessel__glass::after {
   content: '';
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(4, 16, 14, .35);
+  z-index: -1;
+  background: radial-gradient(52% 44% at 50% 46%, rgba(226, 167, 92, .20), transparent 72%);
 }
 
-.plate__num {
+.vessel__glass:hover,
+.vessel:hover .vessel__glass { border-color: rgba(201, 162, 77, .45); }
+
+.vessel__num {
   position: absolute;
-  top: .8rem;
-  left: .9rem;
-  font: 700 .72rem/1 var(--display);
+  top: .7rem;
+  left: .85rem;
+  font: 700 .66rem/1 var(--display);
   letter-spacing: .2em;
   color: var(--gold);
+  opacity: .75;
   font-variant-numeric: tabular-nums;
 }
 
-/* only shown on a plate that has fallen back to its placeholder */
-.plate__todo {
-  display: none;
-  position: absolute;
-  right: .9rem;
-  bottom: .9rem;
-  padding: .35rem .65rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(4, 16, 14, .8);
-  font: 600 .58rem/1 var(--display);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--muted);
+.vessel__art {
+  width: auto;
+  height: clamp(120px, 15vw, 158px);
+  color: var(--gold);
+  filter: drop-shadow(0 0 14px rgba(201, 162, 77, .22));
+  transition: color var(--mid) var(--ease);
 }
-.plate[data-photo='placeholder'] .plate__todo { display: inline-block; }
+.vessel:hover .vessel__art { color: var(--gold-hi); }
 
-.plate__body { max-width: 52ch; }
-.plate__body p { color: var(--muted); }
+/* the bottle draws itself in as it arrives; pathLength="1" on the svg makes
+   one dash length work for every path in it */
+.vessel__art > * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.5s var(--ease);
+  transition-delay: calc(var(--delay, 0ms) + 120ms);
+}
+.vessel[data-shown='true'] .vessel__art > * { stroke-dashoffset: 0; }
 
-.plate__creed {
-  font: 600 .9rem/1.4 var(--display);
-  letter-spacing: .04em;
+.vessel__body h3 { margin-bottom: .45rem; }
+.vessel__body p { margin: 0; color: var(--muted); font-size: .93rem; }
+
+.vessel__creed {
+  font: 600 .84rem/1.4 var(--display);
+  letter-spacing: .03em;
   color: var(--gold-hi);
-  margin-bottom: var(--s-2);
+  margin-bottom: .5rem !important;
 }
 
 .facts {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem;
-  margin: var(--s-3) 0 0;
+  gap: .4rem;
+  margin: var(--s-2) 0 0;
   padding: 0;
 }
 .facts li {
-  padding: .45rem .8rem;
+  padding: .4rem .7rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  font: 500 .74rem/1.2 var(--display);
-  letter-spacing: .06em;
+  font: 500 .7rem/1.2 var(--display);
+  letter-spacing: .05em;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 .facts b { color: var(--gold-hi); font-weight: 700; }
-
-@media (min-width: 52rem) {
-  .plate {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(2rem, 5vw, 4rem);
-  }
-  .plate:nth-child(even) .plate__figure { order: 2; }
-}
 
 /* --------------------------------------------------------------------------
    10. PRICES
@@ -906,15 +966,28 @@ b { font-weight: 600; color: var(--cream); }
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  gap: clamp(1rem, 2.2vw, 1.4rem);
 }
 @media (min-width: 46rem) { .reasons { grid-template-columns: repeat(2, 1fr); } }
 
 .reason {
-  background: var(--deep);
+  position: relative;
   padding: clamp(1.5rem, 4vw, var(--s-4));
+  border: 1px solid var(--glass-line);
+  border-radius: 3px;
+  background:
+    linear-gradient(160deg, rgba(242, 234, 219, .085), rgba(242, 234, 219, .012) 52%),
+    var(--glass);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  overflow: hidden;
+}
+.reason::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-lit) 20%, var(--glass-lit) 80%, transparent);
 }
 .reason__num {
   display: block;
