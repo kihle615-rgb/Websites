@@ -180,7 +180,7 @@ That leaves **204** fragrances.
 | `assets/css/fonts.css` | Self-hosted font declarations — do not edit |
 | `assets/js/catalogue.js` | Fragrances and prices — **edit this one** |
 | `assets/js/site.js` | The film, the menu, the search, the counts, today's hours |
-| `assets/fonts/` | Chakra Petch and Jost, self-hosted (no Google requests) |
+| `assets/fonts/` | Chakra Petch, IBM Plex Sans and IBM Plex Mono, self-hosted (no Google requests) |
 | `assets/img/`, `assets/video/` | Brand imagery and the film |
 
 Every image on the site comes out of the brand film: the wordmark, the
@@ -195,11 +195,13 @@ dimensions.
 - **Colour** is sampled from the brand film itself, not picked to look
   "luxury": the deep emerald of the end card (`#04100E`, `#08211E`), the gold of
   the arabesque (`#C9A24D`), the cream of the wordmark (`#F2EADB`).
-- **Type** is Chakra Petch for everything that carries weight — headings,
-  numerals, labels and buttons. It is a technical grotesque whose chamfered
-  corners are the same cut as the faceted glass on the bottles, so the headings
-  carry the product's own geometry. Jost sets the running text. Prices, hours
-  and counts use tabular figures so columns line up.
+- **Type is three faces doing three jobs.** Chakra Petch sets the headings and
+  the prices — a technical grotesque whose chamfered corners are the same cut as
+  the glass on the bottles, so the headings carry the product's own geometry. IBM
+  Plex Sans sets the running text: engineered rather than friendly, and it holds
+  its weight at small sizes. IBM Plex Mono carries every label, count, price tag,
+  chip, opening hour and readout — the data on this page is set as data, in
+  tabular figures, so every column lines up.
 - **The film plays on its own**, muted and looping, from the moment the page
   opens. It sits in a drawn ogee arch — the same arch clips the video and draws
   the gold line around it, so they can never drift apart. The placeholder plates
